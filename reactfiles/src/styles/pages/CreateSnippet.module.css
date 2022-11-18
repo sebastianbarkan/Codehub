@@ -1,0 +1,40 @@
+.wrapper {
+  display: flex;
+  min-height: 100%;
+}
+
+.create-snippet-heading {
+  color: white;
+  font-size: 2rem;
+  text-align: center;
+  margin: 0 0 3rem 0;
+  border-bottom: 3px solid #07ffc5;
+}
+
+.create-snippet-content-wrap {
+  display: grid;
+  background-color: #2b2b2b;
+  width: 100%;
+  grid-auto-rows: 1fr 20fr;
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+.create-snippet-content {
+  width: 100%;
+  min-height: 100%;
+  display: grid;
+  padding: 0 0 0 0;
+}
+
+@media screen and (max-width: 1250px) {
+}
+
+@media screen and (max-width: 800px) {
+}
+
+@media screen and (max-width: 475px) {
+}
+
+@media screen and (max-width: 375px) {
+}
