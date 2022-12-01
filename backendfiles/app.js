@@ -8,13 +8,14 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const snippets = require("./routes/snippets");
 const LocalStrategy = passportLocal.Strategy;
+require("dotenv").config();
 
 const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "Sqlrootpass2",
-  port: 3306,
-  database: "codesnippetdb",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+  database: process.env.DB_NAME,
 });
 
 // Middleware
@@ -24,7 +25,7 @@ app.use(express.json());
 app.use(
   cors({
     allowedHeaders: ["Content-Type", "Authorization"],
-    origin: "http://localhost:3000",
+    origin: "http://localhost:8080",
     methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD", "DELETE"],
     credentials: true,
   })
@@ -80,6 +81,12 @@ passport.deserializeUser(async (id, cb) => {
 });
 
 // Routes
+app.get("/products", (req, res) => {
+  res.send({
+    products: [],
+  });
+});
+
 app.post("/register", async (req, res) => {
   const { username, password, email } = req.body;
 
