@@ -8,6 +8,7 @@ import styles from "../styles/pages/SearchSnippet.module.css";
 import Fuse from "fuse.js";
 import Select from "react-select";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
+import baseUrl from "../../api/backendfiles";
 
 function SearchSnippets() {
   const [query, setQuery] = useState("");
@@ -27,7 +28,7 @@ function SearchSnippets() {
 
   const getAllSnippets = () => {
     try {
-      fetch(`http://localhost:8080/snippets/getAllSnippets`, {
+      fetch(`${baseUrl}/api/snippets/getAllSnippets`, {
         method: "GET",
         mode: "cors",
         credentials: "include",

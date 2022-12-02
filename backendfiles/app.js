@@ -25,7 +25,7 @@ app.use(express.json());
 app.use(
   cors({
     allowedHeaders: ["Content-Type", "Authorization"],
-    origin: "http://localhost:8080",
+    origin: "http://localhost:3000",
     methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD", "DELETE"],
     credentials: true,
   })
@@ -40,7 +40,7 @@ app.use(
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
-app.use("/snippets", snippets);
+app.use("/api/snippets", snippets);
 // Passport
 passport.use(
   new LocalStrategy(async (username, password, done) => {
@@ -81,13 +81,8 @@ passport.deserializeUser(async (id, cb) => {
 });
 
 // Routes
-app.get("/products", (req, res) => {
-  res.send({
-    products: [],
-  });
-});
 
-app.post("/register", async (req, res) => {
+app.post("/api/register", async (req, res) => {
   const { username, password, email } = req.body;
 
   const queryEmail = await connection
@@ -120,16 +115,16 @@ app.post("/register", async (req, res) => {
     });
   }
 });
-app.post("/login", passport.authenticate("local"), (req, res) => {
+app.post("/api/login", passport.authenticate("local"), (req, res) => {
   res.send("success");
 });
 
-app.get("/user", (req, res) => {
+app.get("/api/user", (req, res) => {
   console.log(req.user);
   res.send(req.user);
 });
 
-app.post("/logout", function (req, res, next) {
+app.post("/api/logout", function (req, res, next) {
   console.log("LOGOUT");
   req.logout(function (err) {
     if (err) {

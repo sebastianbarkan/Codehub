@@ -14,6 +14,7 @@ import {
 import { AuthWrap } from "../../context/AuthWrap";
 import { useNavigate } from "react-router-dom";
 import Avatar from "boring-avatars";
+import baseUrl from "../../../api/backendfiles";
 
 function SnippetViewer() {
   const { snippetDisplayStore, setSnippetDisplayStore } = useContext(
@@ -57,7 +58,7 @@ function SnippetViewer() {
     }
 
     try {
-      fetch(`http://localhost:8080/snippets/saveSnippet`, {
+      fetch(`${baseUrl}/snippets/saveSnippet`, {
         method: "POST",
         mode: "cors",
         headers: {
@@ -110,9 +111,7 @@ function SnippetViewer() {
                       snippetDisplayStore.snippetViewerObject.id
                     ) ? (
                       <div className={styles.actionWrap}>
-                        <FaCheck
-                          className={styles.active}
-                        />
+                        <FaCheck className={styles.active} />
                         <h3 className={styles["header-icon-label"]}>Saved</h3>
                       </div>
                     ) : (

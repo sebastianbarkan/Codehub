@@ -15,8 +15,8 @@ import { AuthWrap } from "../../context/AuthWrap";
 import DeleteModal from "../DeleteModal/DeleteModal";
 import EditModal from "../EditModal/EditModal";
 import CodeEditor from "../Code/CodeEditor";
-import { useEffect } from "react";
 import Avatar from "boring-avatars";
+import baseUrl from "../../../api/backendfiles";
 
 function SnippetDisplay({
   updateActiveEdit,
@@ -44,7 +44,7 @@ function SnippetDisplay({
 
   const deleteSnippet = () => {
     try {
-      fetch(`http://localhost:8080/snippets/deleteSnippet`, {
+      fetch(`${baseUrl}/api/snippets/deleteSnippet`, {
         method: "DELETE",
         mode: "cors",
         headers: {
@@ -64,7 +64,7 @@ function SnippetDisplay({
 
   const updateSnippet = () => {
     try {
-      fetch(`http://localhost:8080/snippets/updateSnippet`, {
+      fetch(`${baseUrl}/api/snippets/updateSnippet`, {
         method: "POST",
         mode: "cors",
         headers: {
@@ -91,7 +91,7 @@ function SnippetDisplay({
   const removeFromSaved = () => {
     delete auth.userData.saved[snippetDisplayStore.snippetObject.id];
     try {
-      fetch("http://localhost:8080/snippets/removeFromSaved", {
+      fetch(`${baseUrl}/api/snippets/removeFromSaved`, {
         method: "POST",
         mode: "cors",
         headers: {

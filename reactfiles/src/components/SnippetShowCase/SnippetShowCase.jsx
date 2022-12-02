@@ -11,6 +11,7 @@ import {
 import { AuthWrap } from "../../context/AuthWrap";
 import Avatar from "boring-avatars";
 import { useEffect } from "react";
+import baseUrl from "../../../api/backendfiles";
 
 function SnippetShowCase(props) {
   let navigate = useNavigate();
@@ -51,7 +52,7 @@ function SnippetShowCase(props) {
     }
 
     try {
-      fetch(`http://localhost:8080/snippets/likeSnippet`, {
+      fetch(`${baseUrl}/api/snippets/likeSnippet`, {
         method: "POST",
         mode: "cors",
         headers: {
@@ -109,7 +110,7 @@ function SnippetShowCase(props) {
     }
 
     try {
-      fetch(`http://localhost:8080/snippets/saveSnippet`, {
+      fetch(`${baseUrl}/snippets/saveSnippet`, {
         method: "POST",
         mode: "cors",
         headers: {

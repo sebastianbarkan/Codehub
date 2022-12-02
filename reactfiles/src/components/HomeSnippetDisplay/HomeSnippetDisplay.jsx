@@ -8,6 +8,7 @@ import Fuse from "fuse.js";
 import { Oval } from "react-loader-spinner";
 import { useNavigate, Link } from "react-router-dom";
 import { SnippetDisplayContext } from "../../context/SnippetDisplayContext";
+import baseUrl from "../../../api/backendfiles";
 
 function HomeSnippetDisplay() {
   const { snippetStore, setSnippetStore } = useContext(SnippetContext);
@@ -47,7 +48,7 @@ function HomeSnippetDisplay() {
 
   const getSnippets = () => {
     try {
-      fetch(`http://localhost:8080/snippets/getAllSnippets`, {
+      fetch(`${baseUrl}/api/snippets/getAllSnippets`, {
         method: "GET",
         mode: "cors",
         credentials: "include",
@@ -104,34 +105,8 @@ function HomeSnippetDisplay() {
     }
   };
 
-  const getSaved = () => {
-    try {
-      fetch(`http://localhost:8080/snippets/getSaved`, {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify([auth.userData.id]),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          let decoded = JSON.parse(atob(data[0].saved));
-          auth.userData.saved = decoded;
-          setAuth({
-            ...auth,
-            isAuthenticated: true,
-            userData: auth.userData,
-          });
-        });
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   useEffect(() => {
     getSnippets();
-    // getSaved();
   }, []);
 
   return (

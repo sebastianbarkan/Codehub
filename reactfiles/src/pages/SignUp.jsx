@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "../styles/pages/SignUp.module.css";
+import baseUrl from "../../api/backendfiles";
 
 function SignUp() {
   const [username, setUsername] = useState("test");
@@ -24,7 +25,7 @@ function SignUp() {
 
   const handleSubmit = () => {
     try {
-      fetch(`http://localhost:8080/register`, {
+      fetch(`${baseUrl}/api/register`, {
         method: "POST",
         mode: "cors",
         headers: {

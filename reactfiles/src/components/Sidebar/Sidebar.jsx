@@ -9,6 +9,7 @@ import {
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { AuthWrap } from "../../context/AuthWrap";
 import styles from "./Sidebar.module.css";
+import baseUrl from "../../../api/backendfiles";
 
 function Sidebar({ editActive, updateSaveEditModal, updateLink }) {
   const { setAuth } = useContext(AuthWrap);
@@ -18,7 +19,7 @@ function Sidebar({ editActive, updateSaveEditModal, updateLink }) {
   const logout = (e) => {
     e.preventDefault();
     try {
-      fetch("http://localhost:8080/logout", {
+      fetch(`${baseUrl}/api/logout`, {
         method: "POST",
         mode: "cors",
         credentials: "include",

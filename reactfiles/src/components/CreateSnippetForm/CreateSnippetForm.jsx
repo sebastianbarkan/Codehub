@@ -9,6 +9,7 @@ import {
 import { AuthWrap } from "../../context/AuthWrap";
 import CodeEditor from "../Code/CodeEditor";
 import styles from "./CreateSnippetForm.module.css";
+import baseUrl from "../../../api/backendfiles";
 
 function CreateSnippetForm() {
   const [code, setCode] = useState(``);
@@ -86,7 +87,7 @@ function CreateSnippetForm() {
     }
 
     try {
-      fetch(`http://localhost:8080/snippets/create`, {
+      fetch(`${baseUrl}/api/snippets/create`, {
         method: "POST",
         mode: "cors",
         headers: {
