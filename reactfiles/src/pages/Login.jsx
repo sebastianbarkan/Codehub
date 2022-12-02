@@ -5,7 +5,7 @@ import { AuthWrap } from "../context/AuthWrap";
 import { SnippetContext } from "../context/SnippetContext";
 import { SnippetDisplayContext } from "../context/SnippetDisplayContext";
 import styles from "../styles/pages/Login.module.css";
-
+import baseUrl from "../../api/backendfiles";
 function Login() {
   const [username, setUsername] = useState("test");
   const [password, setPassword] = useState("test");
@@ -41,7 +41,7 @@ function Login() {
     e.preventDefault();
     try {
       const isAuthenticated = await fetch(
-        `http://localhost:8080/login?username=${username}&password=${password}`,
+        `${baseUrl}/api/login?username=${username}&password=${password}`,
         {
           method: "POST",
           mode: "cors",
@@ -64,7 +64,7 @@ function Login() {
 
   const getUser = () => {
     try {
-      fetch(`http://localhost:8080/user`, {
+      fetch(`${baseUrl}/user`, {
         method: "GET",
         mode: "cors",
         headers: {
@@ -108,7 +108,7 @@ function Login() {
 
   const getSnippets = (userInfo) => {
     try {
-      fetch(`http://localhost:8080/snippets/getAllSnippets`, {
+      fetch(`${baseUrl}/api/snippets/getAllSnippets`, {
         method: "GET",
         mode: "cors",
         credentials: "include",
