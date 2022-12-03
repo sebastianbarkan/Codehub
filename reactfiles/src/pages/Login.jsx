@@ -5,7 +5,7 @@ import { AuthWrap } from "../context/AuthWrap";
 import { SnippetContext } from "../context/SnippetContext";
 import { SnippetDisplayContext } from "../context/SnippetDisplayContext";
 import styles from "../styles/pages/Login.module.css";
-import baseUrl from "../../api/backendfiles";
+import baseUrl from "../api/backendfiles";
 function Login() {
   const [username, setUsername] = useState("test");
   const [password, setPassword] = useState("test");

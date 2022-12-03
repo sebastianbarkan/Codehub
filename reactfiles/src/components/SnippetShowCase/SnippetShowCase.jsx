@@ -11,7 +11,7 @@ import {
 import { AuthWrap } from "../../context/AuthWrap";
 import Avatar from "boring-avatars";
 import { useEffect } from "react";
-import baseUrl from "../../../api/backendfiles";
+import baseUrl from "../../api/backendfiles";
 
 function SnippetShowCase(props) {
   let navigate = useNavigate();

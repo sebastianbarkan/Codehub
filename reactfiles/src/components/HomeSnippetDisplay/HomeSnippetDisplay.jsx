@@ -8,7 +8,7 @@ import Fuse from "fuse.js";
 import { Oval } from "react-loader-spinner";
 import { useNavigate, Link } from "react-router-dom";
 import { SnippetDisplayContext } from "../../context/SnippetDisplayContext";
-import baseUrl from "../../../api/backendfiles";
+import baseUrl from "../../api/backendfiles";
 
 function HomeSnippetDisplay() {
   const { snippetStore, setSnippetStore } = useContext(SnippetContext);

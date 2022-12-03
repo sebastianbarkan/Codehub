@@ -14,7 +14,7 @@ import {
 import { AuthWrap } from "../../context/AuthWrap";
 import { useNavigate } from "react-router-dom";
 import Avatar from "boring-avatars";
-import baseUrl from "../../../api/backendfiles";
+import baseUrl from "../../api/backendfiles";
 
 function SnippetViewer() {
   const { snippetDisplayStore, setSnippetDisplayStore } = useContext(

@@ -8,7 +8,7 @@ import styles from "../styles/pages/SearchSnippet.module.css";
 import Fuse from "fuse.js";
 import Select from "react-select";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
-import baseUrl from "../../api/backendfiles";
+import baseUrl from "../api/backendfiles";
 
 function SearchSnippets() {
   const [query, setQuery] = useState("");

@@ -9,7 +9,7 @@ import {
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { AuthWrap } from "../../context/AuthWrap";
 import styles from "./Sidebar.module.css";
-import baseUrl from "../../../api/backendfiles";
+import baseUrl from "../../api/backendfiles";
 
 function Sidebar({ editActive, updateSaveEditModal, updateLink }) {
   const { setAuth } = useContext(AuthWrap);

@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "../styles/pages/SignUp.module.css";
-import baseUrl from "../../api/backendfiles";
+import baseUrl from "../api/backendfiles";
 
 function SignUp() {
   const [username, setUsername] = useState("test");

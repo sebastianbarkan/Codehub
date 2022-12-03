@@ -16,7 +16,7 @@ import DeleteModal from "../DeleteModal/DeleteModal";
 import EditModal from "../EditModal/EditModal";
 import CodeEditor from "../Code/CodeEditor";
 import Avatar from "boring-avatars";
-import baseUrl from "../../../api/backendfiles";
+import baseUrl from "../../api/backendfiles";
 
 function SnippetDisplay({
   updateActiveEdit,
