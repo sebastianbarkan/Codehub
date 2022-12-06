@@ -9,7 +9,7 @@ const session = require("express-session");
 const snippets = require("./routes/snippets");
 const LocalStrategy = passportLocal.Strategy;
 require("dotenv").config();
-console.log(env.DB_HOST, env.DB_USER);
+console.log(process.env.DB_HOST, process.env.DB_USER);
 const connection = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
