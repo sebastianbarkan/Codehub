@@ -58,7 +58,7 @@ function SnippetViewer() {
     }
 
     try {
-      fetch(`${baseUrl}/snippets/saveSnippet`, {
+      fetch(`${baseUrl}/api/snippets/saveSnippet`, {
         method: "POST",
         mode: "cors",
         headers: {
@@ -91,17 +91,45 @@ function SnippetViewer() {
       {snippetDisplayStore.snippetViewerObject &&
       snippetDisplayStore.snippetViewerObject.id !== undefined ? (
         <section className={styles.wrapper}>
-          <FaArrowLeft className={styles.goBack} onClick={goBack} />
-
-          <div className={styles.contentWrap}>
-            <div className={styles["snippet-header"]}>
-              <div className={styles["title-wrap"]}>
+          {console.log(snippetDisplayStore, "snippetDisplayStore")}
+          <div className={styles.contentContainer}>
+            <div className={styles.subcontent}>
+              <div className={styles.snippetInfo}>
                 <FaArrowLeft className={styles.goBackMobile} onClick={goBack} />
-                <h1 className={styles["title"]}>
-                  {snippetDisplayStore.snippetViewerObject.title}
-                </h1>
+                <FaArrowLeft className={styles.goBack} onClick={goBack} />
+                <div className={styles.userWrap}>
+                  <Avatar
+                    size={50}
+                    name={`${snippetDisplayStore.snippetViewerObject.user_id}`}
+                    variant="beam"
+                    square={true}
+                  />
+                  <div className={styles.userTextWrap}>
+                    <h1 className={styles.title}>
+                      {snippetDisplayStore.snippetViewerObject.title}
+                    </h1>
+                    <p className={styles.author}>
+                      {snippetDisplayStore.snippetViewerObject.author}
+                    </p>
+                  </div>
+                </div>
+                <div className={styles.snippetInfoItem}>
+                  <div className={styles.language}>
+                    <p className={styles.language}>
+                      {snippetDisplayStore.snippetViewerObject.language}
+                    </p>
+                  </div>
+                  <p className={styles.date}>
+                    {snippetDisplayStore.snippetViewerObject.created_at
+                      .split("")
+                      .splice(0, 10)}
+                  </p>
+                </div>
+                <div className={styles.likesWrap}>
+                  <FaHeart />
+                  <p>{snippetDisplayStore.snippetViewerObject.likes}</p>
+                </div>
               </div>
-
               <div className={styles.headerButtons}>
                 <div className={styles.headerButtonWrap}>
                   {auth.userData.id ===
@@ -129,33 +157,6 @@ function SnippetViewer() {
                 </div>
               </div>
             </div>
-            <div className={styles.subcontent}>
-              <div className={styles.userWrap}>
-                <Avatar
-                  size={25}
-                  name={`${snippetDisplayStore.snippetViewerObject.user_id}`}
-                  variant="beam"
-                  square={true}
-                />
-                <p className={styles.author}>
-                  {snippetDisplayStore.snippetViewerObject.author}
-                </p>
-              </div>
-              <p className={styles.date}>
-                {snippetDisplayStore.snippetViewerObject.created_at
-                  .split("")
-                  .splice(0, 10)}
-              </p>
-              <div className={styles.language}>
-                <p className={styles["snippet-language"]}>
-                  {snippetDisplayStore.snippetViewerObject.language}
-                </p>
-              </div>
-              <div className={styles.likesWrap}>
-                <FaHeart />
-                <p>{snippetDisplayStore.snippetViewerObject.likes}</p>
-              </div>
-            </div>
             <div className={styles["main-content"]}>
               <div className={styles.sandpackWrap}>
                 <SandpackProvider
@@ -163,7 +164,7 @@ function SnippetViewer() {
                     colors: {
                       surface1: "#1b1b1b",
                       surface2: "#252525",
-                      surface3: "#2F2F2F",
+                      surface3: "#616060",
                       clickable: "#999999",
                       base: "#808080",
                       disabled: "#4D4D4D",
@@ -238,16 +239,11 @@ function SnippetViewer() {
                 </SandpackProvider>
               </div>
             </div>
-            <div className={styles["description-wrap"]}>
-              <p className={styles["description"]}>
-                {snippetDisplayStore.snippetViewerObject.description}
-              </p>
-            </div>
           </div>
         </section>
       ) : (
         <div className={styles.loadingWrap}>
-          {/* <Oval
+          <Oval
             height={80}
             width={80}
             color="#07ffc5"
@@ -258,7 +254,7 @@ function SnippetViewer() {
             secondaryColor="#07ffc5"
             strokeWidth={2}
             strokeWidthSecondary={2}
-          /> */}
+          />
         </div>
       )}
     </>

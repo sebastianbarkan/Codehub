@@ -4,16 +4,19 @@
   z-index: 99999;
   display: flex;
   padding: 0 0 0 0;
+  box-shadow: 0px 2px 10px 0px rgb(0 0 0), 0px 4px 10px 0px rgb(0 0 0 / 64%);
+  border-radius: 8px;
   row-gap: 1rem;
-  background-color: #2b2b2b;
 }
 
 .sidebar {
   width: 100%;
   display: flex;
+  border-radius: 8px 0px 0px 8px;
   flex-direction: column;
   row-gap: 2rem;
   padding: 1rem 1rem 1rem 1rem;
+  background-color: #282f2e;
   border-right: 1px solid rgb(75, 75, 75);
 }
 
@@ -27,8 +30,9 @@
 .sidebarToggle {
   color: white;
   padding: 1rem 1rem;
-  background-color: #2b2b2b;
+  background-color: #282f2e;
   cursor: pointer;
+  border-radius: 0px 8px 8px 0px;
   display: flex;
   justify-content: flex-end;
   align-items: flex-start;
@@ -37,7 +41,8 @@
 .sidebarToggleIn {
   color: white;
   padding: 1rem 1rem;
-  background-color: #2b2b2b;
+  border-radius: 8px;
+  background-color: #282f2e;
   cursor: pointer;
   display: flex;
   justify-content: flex-end;
@@ -51,11 +56,11 @@
 }
 
 .sidebarToggle:hover {
-  background-color: #3c3c3c;
+  background-color: #181f1e;
 }
 
 .sidebarToggleIn:hover {
-  background-color: #3c3c3c;
+  background-color: #181f1e;
 }
 
 @media screen and (max-width: 1435px) {

@@ -24,6 +24,7 @@ function SnippetDisplay({
   saveEditModal,
   cancelSaveEditModal,
   link,
+  sidebarActive,
 }) {
   const { snippetDisplayStore, setSnippetDisplayStore } = useContext(
     SnippetDisplayContext
@@ -163,43 +164,71 @@ function SnippetDisplay({
         snippetDisplayStore.snippetObject.id !== undefined ? (
         <section className={styles.wrapper}>
           <div className={styles.contentContainer}>
-            <div className={styles["snippet-header"]}>
-              <div ref={modalWrap} className={styles.modalWrap}>
-                <DeleteModal
-                  confirmDelete={deleteSnippet}
-                  cancelDelete={cancelDelete}
-                ></DeleteModal>
+            <div className={styles["snippet-subcontent"]}>
+              <div className={styles.snippetInfo}>
+                <div className={styles.snippetInfoItem}>
+                  <Avatar
+                    size={50}
+                    name={`${snippetDisplayStore.snippetObject.user_id}`}
+                    variant="beam"
+                    square={true}
+                  />
+                  <div className={styles.userTextWrap}>
+                    <h1 className={styles["title"]}>
+                      {snippetDisplayStore.snippetObject.title}
+                    </h1>
+                    <p className={styles["snippet-subcontent-author"]}>
+                      {snippetDisplayStore.snippetObject.author}
+                    </p>
+                  </div>
+                </div>
+                <div className={styles.snippetInfoSubItem}>
+                  <p className={styles["snippet-language"]}>
+                    {snippetDisplayStore.snippetObject.language}
+                  </p>
+                  <div className={styles.dateWrap}>
+                    {snippetDisplayStore.snippetObject.created_at
+                      .split("")
+                      .splice(0, 10)}
+                  </div>
+                </div>
+
+                <div className={styles.likesWrap}>
+                  <p className={styles.likes}>
+                    {snippetDisplayStore.snippetObject.likes}
+                  </p>
+                  <FaHeart className={styles.likesIcon} />
+                </div>
               </div>
-              <div
-                ref={editModalWrap}
-                className={
-                  saveEditModal
-                    ? styles.editModalWrap
-                    : styles.editModalWrapHidden
-                }
-              >
-                <EditModal
-                  stayOnPage={cancelSaveEditModal}
-                  link={link}
-                ></EditModal>
-              </div>
-              <div className={styles["title-wrap"]}>
-                <h1 className={styles["title"]}>
-                  {snippetDisplayStore.snippetObject.title}
-                </h1>
-                <p
+              <div className={styles["snippet-header"]}>
+                <div ref={modalWrap} className={styles.modalWrap}>
+                  <DeleteModal
+                    confirmDelete={deleteSnippet}
+                    cancelDelete={cancelDelete}
+                  ></DeleteModal>
+                </div>
+                <div
+                  ref={sidebar}
                   className={
-                    snippetDisplayStore.snippetObject.public
-                      ? styles.public
-                      : styles.private
+                    sidebarActive
+                      ? styles.sidebarModalWrap
+                      : styles.sidebarModalWrapHidden
+                  }
+                ></div>
+                <div
+                  ref={editModalWrap}
+                  className={
+                    saveEditModal
+                      ? styles.editModalWrap
+                      : styles.editModalWrapHidden
                   }
                 >
-                  {snippetDisplayStore.snippetObject.public
-                    ? "Public"
-                    : "Private"}
-                </p>
+                  <EditModal
+                    stayOnPage={cancelSaveEditModal}
+                    link={link}
+                  ></EditModal>
+                </div>
               </div>
-
               <div className={styles.headerButtons}>
                 {auth.userData.saved !== null &&
                 Object.values(auth.userData.saved).includes(
@@ -270,37 +299,7 @@ function SnippetDisplay({
                 )}
               </div>
             </div>
-            <div className={styles["snippet-subcontent"]}>
-              <div className={styles.snippetInfo}>
-                <div className={styles.userWrap}>
-                  <Avatar
-                    size={25}
-                    name={`${snippetDisplayStore.snippetObject.user_id}`}
-                    variant="beam"
-                    square={true}
-                  />
-                  <p className={styles["snippet-subcontent-author"]}>
-                    {snippetDisplayStore.snippetObject.author}
-                  </p>
-                </div>
-                <div className={styles.dateWrap}>
-                  {snippetDisplayStore.snippetObject.created_at
-                    .split("")
-                    .splice(0, 10)}
-                </div>
 
-                <p className={styles["snippet-language"]}>
-                  {snippetDisplayStore.snippetObject.language}
-                </p>
-
-                <div className={styles.likesWrap}>
-                  <p className={styles.likes}>
-                    {snippetDisplayStore.snippetObject.likes}
-                  </p>
-                  <FaHeart className={styles.likesIcon} />
-                </div>
-              </div>
-            </div>
             <div className={styles["main-content"]}>
               <SandpackProvider
                 template={snippetDisplayStore.snippetObject.language}
@@ -308,7 +307,7 @@ function SnippetDisplay({
                   colors: {
                     surface1: "#1b1b1b",
                     surface2: "#252525",
-                    surface3: "#2F2F2F",
+                    surface3: "#616060",
                     clickable: "#999999",
                     base: "#808080",
                     disabled: "#4D4D4D",
@@ -346,7 +345,6 @@ function SnippetDisplay({
                   <div className={styles.explorer}>
                     <SandpackFileExplorer />
                   </div>
-
                   <div className={styles.explorerWrapMobile}>
                     {explorerOpen ? (
                       <>
@@ -385,14 +383,6 @@ function SnippetDisplay({
                   </div>
                 </div>
               </SandpackProvider>
-            </div>
-
-            <div className={styles["description-wrap"]}>
-              <p className={styles["description"]}>
-                {snippetDisplayStore.snippetObject.description.length === 0
-                  ? "No Description Provided"
-                  : snippetDisplayStore.snippetObject.description}
-              </p>
             </div>
           </div>
         </section>

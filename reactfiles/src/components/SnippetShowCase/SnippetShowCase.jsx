@@ -110,7 +110,7 @@ function SnippetShowCase(props) {
     }
 
     try {
-      fetch(`${baseUrl}/snippets/saveSnippet`, {
+      fetch(`${baseUrl}/api/snippets/saveSnippet`, {
         method: "POST",
         mode: "cors",
         headers: {

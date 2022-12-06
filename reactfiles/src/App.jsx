@@ -6,7 +6,7 @@ import { SnippetContext } from "./context/SnippetContext";
 import { SearchContext } from "./context/SearchContext";
 import { SnippetDisplayContext } from "./context/SnippetDisplayContext";
 import { useEffect, useState } from "react";
-
+import baseUrl from "./api/backendfiles";
 function App() {
   let navigate = useNavigate();
 
@@ -32,7 +32,6 @@ function App() {
   );
 
   useEffect(() => {
-    console.log(isAuthenticated, userData);
     if (isAuthenticated === null || isAuthenticated === false) {
       navigate("/login");
     } else {
@@ -41,8 +40,9 @@ function App() {
   }, []);
 
   const getSnippets = (id) => {
+    console.log("getsnippetsrun");
     try {
-      fetch(`http://localhost:8080/snippets/getSnippets?id=${id}`, {
+      fetch(`${baseUrl}/api/snippets/getSnippets?id=${id}`, {
         method: "GET",
         mode: "cors",
         credentials: "include",
@@ -111,10 +111,6 @@ function App() {
     search: search,
     setSearch: setSearch,
   });
-
-  const handleSnippetType = (value) => {
-    setSnippetType(value);
-  };
 
   const [auth, setAuth] = useState({
     isAuthenticated: isAuthenticated,

@@ -28,9 +28,9 @@ function CreateSnippet() {
     <>
       <section className={styles.wrapper}>
         <Sidebar />
-        <div className={styles["create-snippet-content-wrap"]}>
+        <div className={styles.container}>
           <Header runCreateSnippet={runCreateSnippet}></Header>
-          <div className={styles["create-snippet-content"]}>
+          <div className={styles.contentWrap}>
             <CreateSnippetForm
               createSnippet={createSnippet}
               setCreateSnippet={setCreateSnippet}

@@ -64,7 +64,7 @@ function Login() {
 
   const getUser = () => {
     try {
-      fetch(`${baseUrl}/user`, {
+      fetch(`${baseUrl}/api/user`, {
         method: "GET",
         mode: "cors",
         headers: {

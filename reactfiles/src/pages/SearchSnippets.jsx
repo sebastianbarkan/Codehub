@@ -197,7 +197,7 @@ function SearchSnippets() {
     <>
       <div className={styles.wrapper}>
         <Sidebar></Sidebar>
-        <div className={styles["content-wrap"]}>
+        <div className={styles.contentWrap}>
           <Header></Header>
           <div className={styles.searchContent}>
             <div className={styles.searchWrap}>

@@ -4,11 +4,11 @@ import styles from "./HomeSnippets.module.css";
 import HomeSnippetDisplay from "../HomeSnippetDisplay/HomeSnippetDisplay";
 import { FaArrowLeft } from "react-icons/fa";
 
-function HomeSnippets() {
+function HomeSnippets({ toggleSidebarActive }) {
   const [showSidebar, setShowSidebar] = useState(true);
-
   const handleToggle = () => {
     setShowSidebar(!showSidebar);
+    toggleSidebarActive();
   };
 
   return (
@@ -16,7 +16,7 @@ function HomeSnippets() {
       <div className={styles.wrapper}>
         <div className={showSidebar ? styles.sidebar : styles.sidebarHidden}>
           <UserSnippetsSearch></UserSnippetsSearch>
-          <HomeSnippetDisplay></HomeSnippetDisplay>
+          <HomeSnippetDisplay showSidebar={showSidebar}></HomeSnippetDisplay>
         </div>
         {showSidebar ? (
           <div className={styles.sidebarToggle} onClick={handleToggle}>

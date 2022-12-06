@@ -1,12 +1,14 @@
 .wrapper {
   display: flex;
   min-height: 100%;
+  padding: 0 1rem;
+  column-gap: 1rem;
 }
 
-.content-wrap {
+.contentWrap {
   width: 100%;
+  padding: 1rem 0;
   display: grid;
-  background: #161616;
   grid-template-rows: 1fr 20fr;
   max-height: 100vh;
   overflow-y: auto;
@@ -28,10 +30,16 @@
   font-size: 1.3rem;
   width: 100%;
   border-radius: 8px;
-  background-color: #505050;
+  background-color: #9b9b9b;
   border: none;
-  color: white;
+  font-weight: 600;
+  color: #1c1c1c;
   padding: 0.5rem 1rem 0.5rem 1rem;
+}
+
+.input::placeholder {
+  color: #5b5b5b;
+  font-weight: 600;
 }
 
 .mainSearchWrap {
@@ -72,15 +80,14 @@
   grid-template-columns: repeat(auto-fill, 400px);
   column-gap: 3rem;
   row-gap: 3rem;
-  margin: 3.5rem 0 0 0;
-  padding: 0 0 2rem 3.5rem;
+  padding: 0 0 2rem 0rem;
   width: 100%;
 }
 .searchWrap {
   width: 100%;
-  padding: 1rem;
-  background-color: #161616;
+  padding: 1rem 0;
 }
+
 .searchContainer {
   display: flex;
   align-items: center;
@@ -88,7 +95,7 @@
   column-gap: 2rem;
   padding: 2rem;
   width: 100%;
-  background-color: #212121;
+  background-color: #282f2e;
   box-shadow: 0px 10px 8px -8px rgb(0, 0, 0), 0px 10px 16px -16px rgb(0, 0, 0);
 }
 
@@ -101,7 +108,6 @@
 .dropdown {
   padding: 0 1rem 0 1rem;
   background: none;
-
   border: none;
   color: white;
   font-size: 1.2rem;

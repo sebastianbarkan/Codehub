@@ -1,12 +1,14 @@
 .wrapper {
   display: flex;
   min-height: 100%;
+  padding: 0rem 1rem;
+  column-gap: 1rem;
 }
 
 .contentWrap {
   width: 100%;
+  padding: 1rem 0;
   display: flex;
-  background: #161616;
   align-items: center;
   flex-direction: column;
 }

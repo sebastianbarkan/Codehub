@@ -1,11 +1,10 @@
 .wrap {
   position: relative;
-  background-color: #1b1b1b;
 }
 
 .wrapMobile {
   position: relative;
-  background-color: #1b1b1b;
+
   display: none;
 }
 

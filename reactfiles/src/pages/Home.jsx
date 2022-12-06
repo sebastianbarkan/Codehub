@@ -14,7 +14,12 @@ function Home() {
   const [editActive, setEditActive] = useState(false);
   const [saveEditModal, setSaveEditModal] = useState(false);
   const [link, setLink] = useState("");
-  const [sidebarActive, setSidebarActive] = useState(false);
+  const [sidebarActive, setSidebarActive] = useState(true);
+
+  const toggleSidebarActive = () => {
+    console.log("run");
+    setSidebarActive(!sidebarActive);
+  };
 
   let navigate = useNavigate();
 
@@ -56,12 +61,15 @@ function Home() {
         ></Sidebar>
         <div className={styles.container}>
           <Header></Header>
-          <div className={styles["content-wrapper"]}>
-            <HomeSnippets></HomeSnippets>
+          <div className={styles.contentWrap}>
+            <HomeSnippets
+              toggleSidebarActive={toggleSidebarActive}
+            ></HomeSnippets>
             <SnippetDisplay
               updateActiveEdit={updateActiveEdit}
               cancelActiveEdit={cancelActiveEdit}
               link={link}
+              sidebarActive={sidebarActive}
               saveEditModal={saveEditModal}
               cancelSaveEditModal={cancelSaveEditModal}
             ></SnippetDisplay>

@@ -193,7 +193,7 @@ function CreateSnippetForm() {
             colors: {
               surface1: "#1b1b1b",
               surface2: "#252525",
-              surface3: "#2F2F2F",
+              surface3: "#616060",
               clickable: "#999999",
               base: "#808080",
               disabled: "#4D4D4D",
