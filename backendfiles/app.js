@@ -11,11 +11,11 @@ const LocalStrategy = passportLocal.Strategy;
 require("dotenv").config();
 
 const connection = mysql.createConnection({
-  host: "database-1.cd8jyulcpysq.us-east-1.rds.amazonaws.com",
-  user: "admin",
-  password: "8cjaUsb7",
-  port: 3306,
-  database: "codesnippetdb",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+  database: process.env.DB_NAME,
 });
 
 // Middleware
