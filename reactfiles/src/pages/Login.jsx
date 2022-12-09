@@ -7,8 +7,8 @@ import { SnippetDisplayContext } from "../context/SnippetDisplayContext";
 import styles from "../styles/pages/Login.module.css";
 import baseUrl from "../api/backendfiles";
 function Login() {
-  const [username, setUsername] = useState("test");
-  const [password, setPassword] = useState("test");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [unauthorized, setUnauthorized] = useState(false);
   const [hasSnippets, setHasSnippets] = useState(false);
   const { auth, setAuth } = useContext(AuthWrap);

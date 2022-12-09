@@ -5,9 +5,9 @@ import styles from "../styles/pages/SignUp.module.css";
 import baseUrl from "../api/backendfiles";
 
 function SignUp() {
-  const [username, setUsername] = useState("test");
-  const [password, setPassword] = useState("test");
-  const [email, setEmail] = useState("test@gmail.com");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
   const [emailTaken, setEmailTaken] = useState(false);
   const [usernameTaken, setUsernameTaken] = useState(false);
   let navigate = useNavigate();
