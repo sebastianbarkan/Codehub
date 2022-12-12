@@ -11,11 +11,11 @@ const LocalStrategy = passportLocal.Strategy;
 require("dotenv").config();
 
 const connection = mysql.createConnection({
-  host: "database-1.cd8jyulcpysq.us-east-1.rds.amazonaws.com",
-  user: "admin",
-  password: "8cjaUsb7",
-  port: 3306,
-  database: "codesnippetdb",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+  database: process.env.DB_NAME,
 });
 
 // Middleware
@@ -25,7 +25,7 @@ app.use(express.json());
 app.use(
   cors({
     allowedHeaders: ["Content-Type", "Authorization"],
-    origin: "http://www.coderhub.link",
+    origin: "https://www.coderhub.link",
     methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD", "DELETE"],
     credentials: true,
   })
@@ -59,7 +59,7 @@ passport.use(
     if (!match) {
       return done(null, false, { message: "Incorrect password." });
     }
-    console.log("loggedin");
+
     return done(null, user);
   })
 );
@@ -110,7 +110,7 @@ app.post("/api/register", async (req, res) => {
           `INSERT INTO userinfo (username, password, email) VALUES (?, ?, ?)`,
           [username, hash, email]
         );
-      console.log(`User Created: ${username}`);
+
       return res.status(200).json({ message: "Signed up", success: true });
     });
   }
@@ -120,12 +120,10 @@ app.post("/api/login", passport.authenticate("local"), (req, res) => {
 });
 
 app.get("/api/user", (req, res) => {
-  console.log(req.user);
   res.send(req.user);
 });
 
 app.post("/api/logout", function (req, res, next) {
-  console.log("LOGOUT");
   req.logout(function (err) {
     if (err) {
       return next(err);
