@@ -87,7 +87,7 @@ function CreateSnippetForm() {
     }
 
     try {
-      fetch(`${baseUrl}/api/snippets/create`, {
+      fetch(`${baseUrl}/snippets/create`, {
         method: "POST",
         mode: "cors",
         headers: {

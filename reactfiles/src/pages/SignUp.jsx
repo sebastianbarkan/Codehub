@@ -25,7 +25,7 @@ function SignUp() {
 
   const handleSubmit = () => {
     try {
-      fetch(`${baseUrl}/api/register`, {
+      fetch(`${baseUrl}/register`, {
         method: "POST",
         mode: "cors",
         headers: {

@@ -19,7 +19,7 @@ function Sidebar({ editActive, updateSaveEditModal, updateLink }) {
   const logout = (e) => {
     e.preventDefault();
     try {
-      fetch(`${baseUrl}/api/logout`, {
+      fetch(`${baseUrl}/logout`, {
         method: "POST",
         mode: "cors",
         credentials: "include",
@@ -28,11 +28,9 @@ function Sidebar({ editActive, updateSaveEditModal, updateLink }) {
         },
       })
         .then((res) => {
-          console.log(res, "RES");
           return res.text();
         })
         .then((data) => {
-          console.log(data, "log data");
           if (data === "success") {
             setAuth({
               isAuthenticated: false,

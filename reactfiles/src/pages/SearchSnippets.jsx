@@ -28,7 +28,7 @@ function SearchSnippets() {
 
   const getAllSnippets = () => {
     try {
-      fetch(`${baseUrl}/api/snippets/getAllSnippets`, {
+      fetch(`${baseUrl}/snippets/getAllSnippets`, {
         method: "GET",
         mode: "cors",
         credentials: "include",

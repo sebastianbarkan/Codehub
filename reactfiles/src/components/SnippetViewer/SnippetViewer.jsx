@@ -58,7 +58,7 @@ function SnippetViewer() {
     }
 
     try {
-      fetch(`${baseUrl}/api/snippets/saveSnippet`, {
+      fetch(`${baseUrl}/snippets/saveSnippet`, {
         method: "POST",
         mode: "cors",
         headers: {

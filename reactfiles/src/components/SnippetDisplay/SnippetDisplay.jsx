@@ -45,7 +45,7 @@ function SnippetDisplay({
 
   const deleteSnippet = () => {
     try {
-      fetch(`${baseUrl}/api/snippets/deleteSnippet`, {
+      fetch(`${baseUrl}/snippets/deleteSnippet`, {
         method: "DELETE",
         mode: "cors",
         headers: {
@@ -65,7 +65,7 @@ function SnippetDisplay({
 
   const updateSnippet = () => {
     try {
-      fetch(`${baseUrl}/api/snippets/updateSnippet`, {
+      fetch(`${baseUrl}/snippets/updateSnippet`, {
         method: "POST",
         mode: "cors",
         headers: {
@@ -92,7 +92,7 @@ function SnippetDisplay({
   const removeFromSaved = () => {
     delete auth.userData.saved[snippetDisplayStore.snippetObject.id];
     try {
-      fetch(`${baseUrl}/api/snippets/removeFromSaved`, {
+      fetch(`${baseUrl}/snippets/removeFromSaved`, {
         method: "POST",
         mode: "cors",
         headers: {

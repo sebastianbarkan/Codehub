@@ -40,7 +40,7 @@ function Login() {
     e.preventDefault();
     try {
       const isAuthenticated = await fetch(
-        `${baseUrl}/api/login?username=${username}&password=${password}`,
+        `${baseUrl}/login?username=${username}&password=${password}`,
         {
           method: "POST",
           mode: "cors",
