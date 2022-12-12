@@ -25,7 +25,7 @@ app.use(express.json());
 app.use(
   cors({
     allowedHeaders: ["Content-Type", "Authorization"],
-    origin: "http://localhost:3000",
+    origin: "http://www.coderhub.link",
     methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD", "DELETE"],
     credentials: true,
   })
