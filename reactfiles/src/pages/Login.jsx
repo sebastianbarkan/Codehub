@@ -107,7 +107,7 @@ function Login() {
 
   const getSnippets = (userInfo) => {
     try {
-      fetch(`${baseUrl}/api/snippets/getAllSnippets`, {
+      fetch(`${baseUrl}/snippets/getAllSnippets`, {
         method: "GET",
         mode: "cors",
         credentials: "include",
