@@ -104,7 +104,6 @@ router.post("/saveSnippet", (req, res) => {
       connection.query(
         `SELECT saved FROM userinfo WHERE id=${req.body[2]};`,
         function (err, results) {
-          console.log("results");
           res.send(results);
         }
       );

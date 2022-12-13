@@ -128,7 +128,7 @@ app.post("/api/logout", function (req, res, next) {
     if (err) {
       return next(err);
     }
-    console.log("loggedout");
+
     res.send("success");
   });
 });
