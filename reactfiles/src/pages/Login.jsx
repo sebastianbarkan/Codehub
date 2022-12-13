@@ -16,7 +16,7 @@ function Login() {
     SnippetDisplayContext
   );
   const { snippetStore, setSnippetStore } = useContext(SnippetContext);
-  console.log(process.env.NODE_ENV, baseUrl);
+  console.log("test", baseUrl);
   let navigate = useNavigate();
   useEffect(() => {
     if (hasSnippets) {
