@@ -107,10 +107,7 @@ function App() {
       : localStorage.getItem("snippetType")
   );
 
-  const [searchObject, setSearchObject] = useState({
-    search: search,
-    setSearch: setSearch,
-  });
+  const [query, setQuery] = useState("");
 
   const [auth, setAuth] = useState({
     isAuthenticated: isAuthenticated,
@@ -139,7 +136,7 @@ function App() {
         <SnippetDisplayContext.Provider
           value={{ snippetDisplayStore, setSnippetDisplayStore }}
         >
-          <SearchContext.Provider value={{ searchObject, setSearchObject }}>
+          <SearchContext.Provider value={{ query, setQuery }}>
             <Outlet />
             <ScrollRestoration />
           </SearchContext.Provider>

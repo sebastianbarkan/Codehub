@@ -10,6 +10,7 @@ import { AuthWrap } from "../../context/AuthWrap";
 import CodeEditor from "../Code/CodeEditor";
 import styles from "./CreateSnippetForm.module.css";
 import baseUrl from "../../api/backendfiles.js";
+import CreateSnippet from "../../utilities/createSnippet";
 
 function CreateSnippetForm() {
   const [code, setCode] = useState(``);
@@ -66,7 +67,8 @@ function CreateSnippetForm() {
     },
   ];
 
-  const addSnippet = () => {
+  const handleCreateSnippet = async () => {
+    //check if values are populated correctly
     if (snippetTitle.length === 0) {
       setTitleLengthWarning(true);
       return null;
@@ -74,65 +76,56 @@ function CreateSnippetForm() {
       setDescriptionLengthWarning(true);
       return null;
     }
-
+    //create new date for snippet
     let date = new Date();
     let dateFormat = date.toISOString().split("T")[0];
 
+    //set privacy
     let privacy;
-
     if (publicSelected) {
       privacy = true;
     } else if (privateSelected) {
       privacy = false;
     }
 
-    try {
-      fetch(`${baseUrl}/snippets/create`, {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify([
-          {
-            user_id: jsonData.id,
-            title: snippetTitle,
-            created_at: dateFormat,
-            language: languageValue.value,
-            public: privacy,
-            description: snippetDescription,
-            author: jsonData.username,
-          },
-          code,
-        ]),
-      }).then((res) => {
-        if (res.status === 200) {
-          setTimeout(() => {
-            setAnimate(false);
-          }, 1500);
-          setAnimate(true);
-          setSnippetTitle("");
-          setLanguageValue({ value: "vanilla" });
-          setSnippetDescription("");
-          setCode(`export default function App() {
+    //define object with snippet info
+    const snippetObject = {
+      user_id: jsonData.id,
+      title: snippetTitle,
+      created_at: dateFormat,
+      language: languageValue.value,
+      public: privacy,
+      description: snippetDescription,
+      author: jsonData.username,
+    };
+
+    //send code and snippet info to backend to update database
+    const createSnippet = await CreateSnippet(snippetObject, code);
+
+    //reset snippet values for resuse if creation was succesful
+    if (createSnippet === 200) {
+      setTimeout(() => {
+        setAnimate(false);
+      }, 1500);
+      setAnimate(true);
+      setSnippetTitle("");
+      setLanguageValue({ value: "vanilla" });
+      setSnippetDescription("");
+      setCode(`export default function App() {
             return <h1>Hello World</h1>
           }`);
-          setTitleLengthWarning(false);
-          setDescriptionLengthWarning(false);
-        }
-      });
-    } catch (err) {
-      console.log(err);
+      setTitleLengthWarning(false);
+      setDescriptionLengthWarning(false);
     }
   };
 
+  //handle selected snippet privacy
   const handlePrivate = () => {
     if (publicSelected === true) {
       setPublicSelected(false);
       setPrivateSelected(true);
     }
   };
-
   const handlePublic = () => {
     if (privateSelected === true) {
       setPrivateSelected(false);
@@ -140,6 +133,7 @@ function CreateSnippetForm() {
     }
   };
 
+  //custom styles for react select
   const customStyles = {
     option: (provided) => ({
       ...provided,
@@ -347,7 +341,7 @@ function CreateSnippetForm() {
                     <button
                       type="button"
                       className={styles["create-snippet-button"]}
-                      onClick={addSnippet}
+                      onClick={handleCreateSnippet}
                     >
                       Create Snippet
                     </button>

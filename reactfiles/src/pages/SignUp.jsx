@@ -39,6 +39,7 @@ function SignUp() {
       })
         .then((res) => res.json())
         .then((data) => {
+          //check authentication response and direct to login if successful 
           if (data.message.mess === "email in use") {
             setEmailTaken(true);
           } else if (data.message.mess === "username taken") {

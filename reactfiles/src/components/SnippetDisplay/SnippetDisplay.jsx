@@ -17,6 +17,9 @@ import EditModal from "../EditModal/EditModal";
 import CodeEditor from "../Code/CodeEditor";
 import Avatar from "boring-avatars";
 import baseUrl from "../../api/backendfiles";
+import DeleteSnippet from "../../utilities/deleteSnippet";
+import UpdateSnippet from "../../utilities/updateSnippet";
+import RemoveFromSaved from "../../utilities/removeFromSaved";
 
 function SnippetDisplay({
   updateActiveEdit,
@@ -26,10 +29,8 @@ function SnippetDisplay({
   link,
   sidebarActive,
 }) {
-  const { snippetDisplayStore, setSnippetDisplayStore } = useContext(
-    SnippetDisplayContext
-  );
-  const { snippetStore } = useContext(SnippetContext);
+  //define context and state values
+  const { snippetDisplayStore } = useContext(SnippetDisplayContext);
   const { auth, setAuth } = useContext(AuthWrap);
   const [editActive, setEditActive] = useState(false);
   const modalWrap = useRef(null);
@@ -43,80 +44,55 @@ function SnippetDisplay({
     setCode(files);
   };
 
-  const deleteSnippet = () => {
-    try {
-      fetch(`${baseUrl}/snippets/deleteSnippet`, {
-        method: "DELETE",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: snippetDisplayStore.snippetObject.id,
-        }),
-      }).then((res) => {
-        window.location.reload();
-        modalWrap.current.style.display = "none";
-      });
-    } catch (err) {
-      console.log(err);
+  const handleDeleteSnippet = async () => {
+    //send snippet id to backend and database for deletion
+    const deleteSnippet = await DeleteSnippet(
+      snippetDisplayStore.snippetObject.id
+    );
+    //refresh snippet and hide modal if deletion was success
+    if (deleteSnippet.status === 200) {
+      window.location.reload();
+      modalWrap.current.style.display = "none";
     }
   };
 
-  const updateSnippet = () => {
-    try {
-      fetch(`${baseUrl}/snippets/updateSnippet`, {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify([snippetDisplayStore.snippetObject.id, code]),
-      })
-        .then((res) => res.text())
-        .then((message) => {
-          if (message === "updated") {
-            cancelActiveEdit();
-            setEditActive(false);
-            setTimeout(() => {
-              setShowSaved(false);
-            }, 1000);
-            setShowSaved(true);
-          }
-        });
-    } catch (err) {
-      console.log(err);
+  const handleUpdateSnippet = async () => {
+    //send snippet id and updated code to backend and database
+    const updateSnippet = await UpdateSnippet(
+      snippetDisplayStore.snippetObject.id,
+      code
+    );
+    //check if update was success and show a success message to user
+    if (updateSnippet === "updated") {
+      cancelActiveEdit();
+      setEditActive(false);
+      setTimeout(() => {
+        setShowSaved(false);
+      }, 1000);
+      setShowSaved(true);
     }
   };
 
-  const removeFromSaved = () => {
+  const handleRemoveFromSaved = async () => {
+    //remove snippet from saved context object
     delete auth.userData.saved[snippetDisplayStore.snippetObject.id];
-    try {
-      fetch(`${baseUrl}/snippets/removeFromSaved`, {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify([auth.userData.id, auth.userData.saved]),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          setShowRemovedFromSave(true);
-          let decoded = JSON.parse(atob(data[0].saved));
-          auth.userData.saved = decoded;
 
-          localStorage.setItem("userData", JSON.stringify(auth.userData));
-          setAuth({
-            ...auth,
-            isAuthenticated: true,
-            userData: auth.userData,
-          });
-          window.location.reload();
-        });
-    } catch (err) {
-      console.log(err);
-    }
+    //update database with new saved object
+    const removeFromSaved = await RemoveFromSaved(
+      auth.userData.id,
+      auth.userData.saved
+    );
+    //show user snippet was removed and store the new saved object in context/localstorage
+    setShowRemovedFromSave(true);
+    let decoded = JSON.parse(atob(removeFromSaved[0].saved));
+    auth.userData.saved = decoded;
+    localStorage.setItem("userData", JSON.stringify(auth.userData));
+    setAuth({
+      ...auth,
+      isAuthenticated: true,
+      userData: auth.userData,
+    });
+    window.location.reload();
   };
 
   const cancelDelete = () => {
@@ -203,7 +179,7 @@ function SnippetDisplay({
               <div className={styles["snippet-header"]}>
                 <div ref={modalWrap} className={styles.modalWrap}>
                   <DeleteModal
-                    confirmDelete={deleteSnippet}
+                    confirmDelete={handleDeleteSnippet}
                     cancelDelete={cancelDelete}
                   ></DeleteModal>
                 </div>
@@ -237,11 +213,11 @@ function SnippetDisplay({
                   <div className={styles.headerButtonWrap}>
                     <FaTrash
                       className={styles["header-icon-delete"]}
-                      onClick={removeFromSaved}
+                      onClick={handleRemoveFromSaved}
                     />
                     <h3
                       className={styles["header-icon-label"]}
-                      onClick={removeFromSaved}
+                      onClick={handleRemoveFromSaved}
                     >
                       Remove from saved
                     </h3>
@@ -257,7 +233,7 @@ function SnippetDisplay({
                       <div className={styles.editActiveWrap}>
                         <button
                           className={styles.saveEdit}
-                          onClick={updateSnippet}
+                          onClick={handleUpdateSnippet}
                         >
                           Save{" "}
                           <span className={styles.changeSpan}>Changes</span>

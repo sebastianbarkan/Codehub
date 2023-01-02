@@ -20,12 +20,14 @@ const connection = mysql.createConnection({
 
 // Middleware
 const app = express();
-
 app.use(express.json());
 app.use(
   cors({
     allowedHeaders: ["Content-Type", "Authorization"],
-    origin: "https://www.coderhub.link",
+    origin:
+      process.env.NODE_ENV === "developement"
+        ? "http://localhost:3000"
+        : "https://www.coderhub.link",
     methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD", "DELETE"],
     credentials: true,
   })

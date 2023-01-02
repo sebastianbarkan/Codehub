@@ -1,0 +1,25 @@
+.wrapper {
+  width: 400px;
+  background-color: #323939;
+  border-radius: 8px;
+  height: 450px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2rem 1.5rem;
+  row-gap: 3rem;
+}
+
+.topPlaceholder {
+  width: 100%;
+  background-color: #555f5f;
+  border-radius: 8px;
+  height: 100px;
+}
+
+.bottomPlaceholder {
+  width: 100%;
+  height: 300px;
+  background-color: #555f5f;
+  border-radius: 8px;
+}

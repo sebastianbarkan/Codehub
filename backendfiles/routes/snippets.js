@@ -31,9 +31,22 @@ router.get("/getSnippets", (req, res) => {
 });
 
 router.get("/getAllSnippets", (req, res) => {
-  connection.query(`SELECT * FROM snippets;`, function (err, results) {
-    res.send(results);
-  });
+  const userId = req.query.userId;
+  try {
+    connection.query(`SELECT * FROM snippets;`, function (err, results) {
+      let publicSnippets = results.filter((e, i) => {
+        if (e.public === 1) {
+          return e;
+        } else if (e.public === 0 && e.user_Id === userId) {
+          return e;
+        }
+      });
+      res.send(publicSnippets);
+    });
+  } catch (err) {
+    console.log(err);
+    res.send(err);
+  }
 });
 
 router.delete("/deleteSnippet", (req, res) => {
@@ -85,12 +98,12 @@ router.post("/likeSnippet", (req, res) => {
 });
 
 router.post("/saveSnippet", (req, res) => {
-  const saves = JSON.stringify(req.body[1]);
+  const saves = JSON.stringify(req.body[0]);
   let encode = Buffer.from(saves).toString("base64");
 
   try {
     connection.query(
-      `UPDATE userinfo SET saved ="${encode}" WHERE id=${req.body[2]};`,
+      `UPDATE userinfo SET saved ="${encode}" WHERE id=${req.body[1]};`,
       function (err, results, status) {
         getSaved();
       }
@@ -102,7 +115,7 @@ router.post("/saveSnippet", (req, res) => {
   const getSaved = () => {
     try {
       connection.query(
-        `SELECT saved FROM userinfo WHERE id=${req.body[2]};`,
+        `SELECT saved FROM userinfo WHERE id=${req.body[1]};`,
         function (err, results) {
           res.send(results);
         }

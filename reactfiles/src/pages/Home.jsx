@@ -17,7 +17,6 @@ function Home() {
   const [sidebarActive, setSidebarActive] = useState(true);
 
   const toggleSidebarActive = () => {
-    console.log("run");
     setSidebarActive(!sidebarActive);
   };
 

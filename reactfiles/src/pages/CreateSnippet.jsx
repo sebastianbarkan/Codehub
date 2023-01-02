@@ -16,7 +16,6 @@ function CreateSnippet() {
   let navigate = useNavigate();
 
   useEffect(() => {
-    console.log(auth, "CREATE");
     if (auth.isAuthenticated === false) {
       navigate("/login");
     } else if (auth.userData === null) {

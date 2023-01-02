@@ -16,8 +16,8 @@ function HomeSnippetDisplay() {
     SnippetDisplayContext
   );
 
-  const { searchObject } = useContext(SearchContext);
-  const { auth, setAuth } = useContext(AuthWrap);
+  const { query } = useContext(SearchContext);
+  const { auth } = useContext(AuthWrap);
 
   let navigate = useNavigate();
   useEffect(() => {
@@ -27,9 +27,11 @@ function HomeSnippetDisplay() {
   }, []);
 
   const searchFilter = (item, i) => {
-    if (searchObject.search === "") {
+    //if no search is entered return all items
+    if (query === "") {
       return item;
     } else {
+      //if there is a search query use Fuse to return matching items
       const options = {
         includeScore: true,
         useExtendedSearch: true,
@@ -38,7 +40,7 @@ function HomeSnippetDisplay() {
 
       const fuse = new Fuse(snippetStore.snippetArray, options);
 
-      let ids = fuse.search(searchObject.search).map((e) => {
+      let ids = fuse.search(query).map((e) => {
         return e.item.id;
       });
 

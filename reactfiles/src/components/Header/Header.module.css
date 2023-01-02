@@ -9,6 +9,12 @@
   padding: 0.75rem 2rem 0.75rem 2rem;
 }
 
+.infoWrapper {
+  display: flex;
+  align-items: center;
+  column-gap: 1rem;
+}
+
 .searchWrap {
   display: flex;
   align-items: center;

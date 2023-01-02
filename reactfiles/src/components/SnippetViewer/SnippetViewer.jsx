@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { FaStar, FaArrowLeft, FaHeart, FaCheck } from "react-icons/fa";
 import styles from "./SnippetViewer.module.css";
-import { SnippetContext } from "../../context/SnippetContext";
 import { SnippetDisplayContext } from "../../context/SnippetDisplayContext";
-import { useContext, useRef } from "react";
+import { useContext } from "react";
 import { Oval } from "react-loader-spinner";
 import {
   SandpackProvider,
@@ -14,76 +13,59 @@ import {
 import { AuthWrap } from "../../context/AuthWrap";
 import { useNavigate } from "react-router-dom";
 import Avatar from "boring-avatars";
-import baseUrl from "../../api/backendfiles";
+import SaveSnippet from "../../utilities/saveSnippet";
 
 function SnippetViewer() {
-  const { snippetDisplayStore, setSnippetDisplayStore } = useContext(
-    SnippetDisplayContext
-  );
-
+  const { snippetDisplayStore } = useContext(SnippetDisplayContext);
   const { auth, setAuth } = useContext(AuthWrap);
-
   const [explorerOpen, setExplorerOpen] = useState(false);
   const toggleExplorer = () => {
     setExplorerOpen(!explorerOpen);
   };
-  let navigate = useNavigate();
 
+  let navigate = useNavigate();
   const goBack = () => {
     navigate(-1);
   };
 
-  const saveSnippet = (e) => {
+  const handleSaveSnippet = async (e) => {
+    //stop propogation to only trigger save function
     if (!e) var e = window.event;
     e.cancelBubble = true;
     if (e.stopPropagation) e.stopPropagation();
 
     let saved;
-
+    //check if saved object is null
     if (auth.userData.saved === null) {
+      //if it is then create new object and add current snippet
       let key = snippetDisplayStore.snippetViewerObject.id;
       saved = {
         [key]: key,
       };
     } else {
+      //if not null then check to make sure its not already saved
       for (let i in auth.userData.saved) {
         if (i === snippetDisplayStore.snippetViewerObject.id) {
           return null;
         }
       }
+      //then add it to the saved object
       auth.userData.saved[snippetDisplayStore.snippetViewerObject.id] =
         snippetDisplayStore.snippetViewerObject.id;
-
       saved = auth.userData.saved;
     }
-
-    try {
-      fetch(`${baseUrl}/snippets/saveSnippet`, {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify([
-          { id: snippetDisplayStore.snippetViewerObject.id },
-          saved,
-          auth.userData.id,
-        ]),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          let decoded = JSON.parse(atob(data[0].saved));
-          auth.userData.saved = decoded;
-          localStorage.setItem("userData", JSON.stringify(auth.userData));
-          setAuth({
-            ...auth,
-            isAuthenticated: true,
-            userData: auth.userData,
-          });
-        });
-    } catch (err) {
-      console.log(err);
-    }
+    //send the updated saved object to backend and database
+    const saveSnippet = await SaveSnippet(saved, auth.userData.id);
+    //decode response by and parse it to json
+    let decoded = JSON.parse(atob(saveSnippet[0].saved));
+    //store updated save object in the global context and localstorage
+    auth.userData.saved = decoded;
+    localStorage.setItem("userData", JSON.stringify(auth.userData));
+    setAuth({
+      ...auth,
+      isAuthenticated: true,
+      userData: auth.userData,
+    });
   };
 
   return (
@@ -143,13 +125,19 @@ function SnippetViewer() {
                         <h3 className={styles["header-icon-label"]}>Saved</h3>
                       </div>
                     ) : (
-                      <div className={styles.actionWrap} onClick={saveSnippet}>
+                      <div
+                        className={styles.actionWrap}
+                        onClick={handleSaveSnippet}
+                      >
                         <FaStar className={styles["header-icon-delete"]} />
                         <h3 className={styles["header-icon-label"]}>Save</h3>
                       </div>
                     )
                   ) : (
-                    <div className={styles.actionWrap} onClick={saveSnippet}>
+                    <div
+                      className={styles.actionWrap}
+                      onClick={handleSaveSnippet}
+                    >
                       <FaStar className={styles["header-icon-delete"]} />
                       <h3 className={styles["header-icon-label"]}>Save</h3>
                     </div>

@@ -75,8 +75,11 @@
 .title {
   padding: 0;
   font-size: 1.65rem;
-  max-width: 300px;
-  overflow: hidden;
+  max-width: 400px;
+  word-break: break-all;
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   text-decoration: underline;
   text-decoration-color: #07ffc5;
 }
@@ -87,9 +90,8 @@
 }
 
 .language {
-  color: #21cabf;
-  margin: 0 0.5rem 0 0;
-  font-style: italic;
+  color: #ffdd00;
+  font-weight: 500;
 }
 
 .snippet {

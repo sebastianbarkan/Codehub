@@ -4,6 +4,7 @@ import {
   FaSearch,
   FaLayerGroup,
   FaCog,
+  FaCompass,
   FaSignOutAlt,
 } from "react-icons/fa";
 import { Link, useNavigate, useLocation } from "react-router-dom";
@@ -95,7 +96,7 @@ function Sidebar({ editActive, updateSaveEditModal, updateLink }) {
                 : styles.link
             }
           >
-            <FaSearch
+            <FaCompass
               className={`${styles["sidebar-icon"]} ${styles["sidebar-item"]}`}
             />
           </Link>

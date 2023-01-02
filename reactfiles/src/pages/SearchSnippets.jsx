@@ -8,11 +8,13 @@ import styles from "../styles/pages/SearchSnippet.module.css";
 import Fuse from "fuse.js";
 import Select from "react-select";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
-import baseUrl from "../api/backendfiles";
+import GetAllSnippets from "../utilities/getAllSnippets";
+import SnippetSkeleton from "../components/SnippetSkeleton/SnippetSkeleton";
+import { SearchContext } from "../context/SearchContext";
 
 function SearchSnippets() {
-  const [query, setQuery] = useState("");
   const { auth } = useContext(AuthWrap);
+  const { query } = useContext(SearchContext);
   const [showFilters, setShowFilters] = useState(false);
   const [snippets, setSnippets] = useState();
   const [likesSort, setLikesSort] = useState(false);
@@ -26,42 +28,16 @@ function SearchSnippets() {
     }
   }, [auth.isAuthenticated, auth.userData]);
 
-  const getAllSnippets = () => {
+  const getAllSnippets = async () => {
     try {
-      fetch(`${baseUrl}/snippets/getAllSnippets`, {
-        method: "GET",
-        mode: "cors",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          for (let i = 0; i < data.length; i++) {
-            let decoded = JSON.parse(atob(data[i].code_snippet));
-            data[i].code_snippet = decoded;
-          }
-          if (data === undefined) {
-            console.log("no snippets yet");
-          } else {
-            let privateSnippet = [];
-            data.forEach((snippet, i) => {
-              if (snippet.public === 1) {
-                privateSnippet.push(snippet);
-              }
-              if (i === data.length - 1) {
-                let sorted = data.sort((a, b) => {
-                  let aTime = new Date(a.created_at).getTime();
-                  let bTime = new Date(b.created_at).getTime();
-                  return bTime - aTime;
-                });
-                console.log("sorted");
-                setSnippets(sorted);
-              }
-            });
-          }
-        });
+      //fetch all snippets
+      const allSnippets = await GetAllSnippets(auth.userData.id);
+      //make sure that the snippets arent undefined
+      if (allSnippets === undefined) {
+        console.log("no snippets yet");
+      } else {
+        setSnippets(allSnippets);
+      }
     } catch (err) {
       console.log(err);
     }
@@ -73,8 +49,8 @@ function SearchSnippets() {
 
   const [sortValue, setSortValue] = useState("Latest");
   const [languageValue, setLanguageValue] = useState({
-    value: "All",
-    label: "All",
+    value: "All languages",
+    label: "All languages",
   });
 
   const searchFilter = (item, i) => {
@@ -98,16 +74,11 @@ function SearchSnippets() {
   };
 
   const languageFilter = (item, i) => {
-    if (languageValue.value === "All") {
+    if (languageValue.value === "All languages") {
       return item;
     } else {
       return item.language === languageValue.value;
     }
-  };
-
-  const handleSearchQuery = (e) => {
-    e.preventDefault();
-    setQuery(e.target.value);
   };
 
   const options = [
@@ -116,7 +87,7 @@ function SearchSnippets() {
   ];
 
   const languageOptions = [
-    { value: "All", label: "All" },
+    { value: "All languages", label: "All languages" },
     { value: "react-ts", label: "react/typescript" },
     { value: "react", label: "react" },
     { value: "angular", label: "angular" },
@@ -126,6 +97,7 @@ function SearchSnippets() {
     { value: "vanilla", label: "vanilla js" },
   ];
 
+  //custom styles for react-select
   const customStyles = {
     option: (provided) => ({
       ...provided,
@@ -139,7 +111,7 @@ function SearchSnippets() {
       color: "white",
       border: "1px solid rgb(255, 255, 255, .3)",
       backgroundColor: "none",
-      width: "150px",
+      width: "200px",
       fontSize: "1.2rem",
       borderRadius: "4px",
     }),
@@ -170,8 +142,9 @@ function SearchSnippets() {
     }),
   };
 
-  const searchSort = (choice) => {
-    if (choice.value === "Latest") {
+  const handleSearchSort = (choice) => {
+    if (choice === "Latest") {
+      //sort by date created
       let latestSort = snippets.sort((a, b) => {
         let aTime = new Date(a.created_at).getTime();
         let bTime = new Date(b.created_at).getTime();
@@ -179,7 +152,8 @@ function SearchSnippets() {
       });
       setSnippets(latestSort);
       setSortValue(choice);
-    } else if (choice.value === "Likes") {
+    } else if (choice === "Likes") {
+      //sort by the amount of likes
       let likeSort = snippets.sort((a, b) => {
         return b.likes - a.likes;
       });
@@ -193,6 +167,9 @@ function SearchSnippets() {
     setShowFilters(!showFilters);
   };
 
+  //skeleton array for placeholder loading
+  const skeleton = Array.apply(null, Array(20)).map(function () {});
+
   return (
     <>
       <div className={styles.wrapper}>
@@ -202,49 +179,40 @@ function SearchSnippets() {
           <div className={styles.searchContent}>
             <div className={styles.searchWrap}>
               <div className={styles.searchContainer}>
-                <div className={styles.mainSearchWrap}>
-                  <input
-                    type="text"
-                    className={styles.input}
-                    value={query}
-                    onChange={handleSearchQuery}
-                    placeholder="Search..."
-                  ></input>
-                </div>
-
                 <div className={styles.filtersWrap}>
-                  <div className={styles.filterItem}>
-                    <p className={styles.filterLabel}>Sort By</p>
-                    <Select
-                      id="reactselect"
-                      styles={customStyles}
-                      className={styles["filter-select"]}
-                      placeholder={sortValue}
-                      options={options}
-                      isSearchable={false}
-                      onChange={(choice) => searchSort(choice)}
-                      value={sortValue}
-                      components={{
-                        IndicatorSeparator: () => null,
-                      }}
-                    />
-                  </div>
-                  <div className={styles.filterItem}>
-                    <p className={styles.filterLabel}>Framework</p>
-                    <Select
-                      id="reactselect"
-                      styles={customStyles}
-                      className={styles["filter-select"]}
-                      placeholder={languageValue.value}
-                      options={languageOptions}
-                      isSearchable={false}
-                      onChange={(choice) => setLanguageValue(choice)}
-                      value={languageValue.value}
-                      components={{
-                        IndicatorSeparator: () => null,
-                      }}
-                    />
-                  </div>
+                  <p
+                    className={
+                      sortValue === "Latest"
+                        ? styles.filterItemSelected
+                        : styles.filterItem
+                    }
+                    onClick={() => handleSearchSort("Latest")}
+                  >
+                    Latest
+                  </p>
+                  <p
+                    className={
+                      sortValue === "Likes"
+                        ? styles.filterItemSelected
+                        : styles.filterItem
+                    }
+                    onClick={() => handleSearchSort("Likes")}
+                  >
+                    Top Rated
+                  </p>
+                  <Select
+                    id="reactselect"
+                    styles={customStyles}
+                    className={styles["filter-select"]}
+                    placeholder={languageValue.value}
+                    options={languageOptions}
+                    isSearchable={false}
+                    onChange={(choice) => setLanguageValue(choice)}
+                    value={languageValue.value}
+                    components={{
+                      IndicatorSeparator: () => null,
+                    }}
+                  />
                 </div>
                 {showFilters ? (
                   <div className={styles.filtersWrapMobile}>
@@ -311,21 +279,28 @@ function SearchSnippets() {
             </div>
 
             <div className={styles["results-wrap"]}>
-              {snippets
-                ? snippets
-                    .filter(searchFilter)
-                    .filter(languageFilter)
-                    .map((e, i) => {
-                      return (
-                        <>
-                          <SnippetShowCase
-                            info={e}
-                            likeSort={likesSort}
-                          ></SnippetShowCase>
-                        </>
-                      );
-                    })
-                : null}
+              {snippets ? (
+                snippets
+                  .filter(searchFilter)
+                  .filter(languageFilter)
+                  .map((e, i) => {
+                    return (
+                      <>
+                        <SnippetShowCase
+                          info={e}
+                          likeSort={likesSort}
+                        ></SnippetShowCase>
+                      </>
+                    );
+                  })
+              ) : (
+                <>
+                  {skeleton.map((e, i) => {
+                    console.log(e, "JERE");
+                    return <SnippetSkeleton />;
+                  })}
+                </>
+              )}
             </div>
           </div>
         </div>
