@@ -6,11 +6,10 @@ import { useNavigate } from "react-router-dom";
 import SnippetShowCase from "../components/SnippetShowCase/SnippetShowCase";
 import styles from "../styles/pages/SearchSnippet.module.css";
 import Fuse from "fuse.js";
-import Select from "react-select";
-import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 import GetAllSnippets from "../utilities/getAllSnippets";
 import SnippetSkeleton from "../components/SnippetSkeleton/SnippetSkeleton";
 import { SearchContext } from "../context/SearchContext";
+import SearchControls from "../components/SearchControls/SearchControls";
 
 function SearchSnippets() {
   const { auth } = useContext(AuthWrap);
@@ -176,108 +175,8 @@ function SearchSnippets() {
         <Sidebar></Sidebar>
         <div className={styles.contentWrap}>
           <Header></Header>
-          <div className={styles.searchContent}>
-            <div className={styles.searchWrap}>
-              <div className={styles.searchContainer}>
-                <div className={styles.filtersWrap}>
-                  <p
-                    className={
-                      sortValue === "Latest"
-                        ? styles.filterItemSelected
-                        : styles.filterItem
-                    }
-                    onClick={() => handleSearchSort("Latest")}
-                  >
-                    Latest
-                  </p>
-                  <p
-                    className={
-                      sortValue === "Likes"
-                        ? styles.filterItemSelected
-                        : styles.filterItem
-                    }
-                    onClick={() => handleSearchSort("Likes")}
-                  >
-                    Top Rated
-                  </p>
-                  <Select
-                    id="reactselect"
-                    styles={customStyles}
-                    className={styles["filter-select"]}
-                    placeholder={languageValue.value}
-                    options={languageOptions}
-                    isSearchable={false}
-                    onChange={(choice) => setLanguageValue(choice)}
-                    value={languageValue.value}
-                    components={{
-                      IndicatorSeparator: () => null,
-                    }}
-                  />
-                </div>
-                {showFilters ? (
-                  <div className={styles.filtersWrapMobile}>
-                    <div className={styles.filterItem}>
-                      <p className={styles.filterLabel}>Sort By</p>
-                      <Select
-                        id="reactselect"
-                        styles={customStyles}
-                        className={styles["filter-select"]}
-                        placeholder={sortValue}
-                        options={options}
-                        isSearchable={false}
-                        onChange={(choice) => setSortValue(choice)}
-                        value={sortValue}
-                        components={{
-                          IndicatorSeparator: () => null,
-                        }}
-                      />
-                    </div>
-                    <div className={styles.filterItem}>
-                      <p className={styles.filterLabel}>Framework</p>
-                      <Select
-                        id="reactselect"
-                        styles={customStyles}
-                        className={styles["filter-select"]}
-                        placeholder={languageValue.value}
-                        options={languageOptions}
-                        isSearchable={false}
-                        onChange={(choice) => setLanguageValue(choice)}
-                        value={languageValue.value}
-                        components={{
-                          IndicatorSeparator: () => null,
-                        }}
-                      />
-                    </div>
-                    <div className={styles.filterToggleWrap}>
-                      <p
-                        className={styles.filterButtonMobile}
-                        onClick={toggleFilters}
-                      >
-                        close
-                      </p>
-                      <FaArrowUp
-                        className={styles.toggleFilterIcon}
-                        onClick={toggleFilters}
-                      />
-                    </div>
-                  </div>
-                ) : (
-                  <div className={styles.filterToggleWrap}>
-                    <p
-                      className={styles.filterButtonMobile}
-                      onClick={toggleFilters}
-                    >
-                      filters
-                    </p>
-                    <FaArrowDown
-                      className={styles.toggleFilterIcon}
-                      onClick={toggleFilters}
-                    />
-                  </div>
-                )}
-              </div>
-            </div>
-
+          <div className={styles.mainContent}>
+            <SearchControls />
             <div className={styles["results-wrap"]}>
               {snippets ? (
                 snippets

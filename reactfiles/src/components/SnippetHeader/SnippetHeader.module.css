@@ -1,0 +1,28 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+}
+
+.icon {
+  width: 24px;
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.721);
+}
+
+.snippetTitle {
+  color: #07ffc5;
+}
+
+.authorSpan {
+  display: flex;
+  align-items: center;
+}
+
+.authorWrap {
+  color: rgba(255, 255, 255, 0.721);
+  display: flex;
+  align-items: center;
+  column-gap: 0.25rem;
+}

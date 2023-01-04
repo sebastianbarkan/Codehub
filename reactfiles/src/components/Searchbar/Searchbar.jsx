@@ -82,7 +82,6 @@ function Searchbar() {
   return (
     <div className={styles.wrapper}>
       <div className={styles.searchBarContainer}>
-        <FaSearch className={styles.searchIcon} />
         <input
           type="text"
           className={styles.input}
@@ -91,6 +90,9 @@ function Searchbar() {
           placeholder="Search..."
           onKeyDown={handleSearchEnter}
         ></input>
+        <button className={styles.searchButton}>
+          <FaSearch className={styles.searchIcon} />
+        </button>
         <FaTimesCircle
           className={currentQuery !== "" ? styles.cancelIcon : styles.hidden}
           onClick={() => setCurrentQuery("")}

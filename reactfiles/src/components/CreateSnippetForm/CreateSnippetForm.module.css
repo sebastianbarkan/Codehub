@@ -1,12 +1,21 @@
 .wrapper {
-  display: grid;
   width: 100%;
-  padding: 0 0 0 0;
-  background-color: #2b2b2b;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  background-color: #232530;
+  max-height: 100%;
+  border-radius: 10px;
 }
 
 .wrapper * {
   border-radius: 8px;
+}
+
+.wrapper > :nth-child(2) {
+  max-height: 100%;
+  height: 100%;
 }
 
 .form-wrapper {
@@ -35,6 +44,7 @@
   padding: 1rem 0;
   background-color: #202020;
 }
+
 .editorWrap {
   align-items: center;
   min-width: 100%;
@@ -136,7 +146,7 @@
   background-color: #3b3b3b;
   border-radius: 4px;
   color: white;
-  font-family: "Ubuntu", sans-serif;
+  font-family: "Satoshi", sans-serif;
   width: 100%;
 }
 .selection {
@@ -198,8 +208,6 @@
   cursor: pointer;
   color: #2b2b2b;
   background-color: #21cabf;
-  box-shadow: 0px 2px 8px 0px rgb(0 0 0 / 50%),
-    0px 4px 16px 0px rgb(0 0 0 / 50%);
 }
 
 .sidebar {
@@ -207,7 +215,6 @@
   flex-direction: column;
   align-items: flex-end;
   row-gap: 1rem;
-  background-color: #313331;
   padding: 1rem 1rem 0 1rem;
 }
 
@@ -239,8 +246,6 @@
   font-weight: 600;
   transition: all 0.2s ease-in;
   background-image: linear-gradient(124deg, #23da8d, #21cabf);
-  box-shadow: 0px 2px 8px 0px rgb(0 0 0 / 50%),
-    0px 4px 16px 0px rgb(0 0 0 / 50%);
 }
 
 .create-snippet-button:hover {
@@ -286,9 +291,31 @@
   column-gap: 0.5rem;
 }
 
+.icon {
+  width: 24px;
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.721);
+}
+
+.snippetTitle {
+  color: #07ffc5;
+}
+
 .checkIcon {
   font-size: 2rem;
   color: #21cabf;
+}
+
+.authorSpan {
+  display: flex;
+  align-items: center;
+}
+
+.authorWrap {
+  color: rgba(255, 255, 255, 0.721);
+  display: flex;
+  align-items: center;
+  column-gap: 0.25rem;
 }
 
 .snippetAdded {
@@ -374,7 +401,7 @@
 .filesWrap * {
   white-space: normal;
   word-break: break-all;
-  background-color: #282f2e;
+  background-color: #282a36;
 }
 
 .filesWrap > :first-child {

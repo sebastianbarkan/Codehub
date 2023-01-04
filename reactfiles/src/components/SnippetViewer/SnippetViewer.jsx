@@ -14,6 +14,7 @@ import { AuthWrap } from "../../context/AuthWrap";
 import { useNavigate } from "react-router-dom";
 import Avatar from "boring-avatars";
 import SaveSnippet from "../../utilities/saveSnippet";
+import SnippetSkeleton from "../SnippetSkeleton/SnippetSkeleton";
 
 function SnippetViewer() {
   const { snippetDisplayStore } = useContext(SnippetDisplayContext);
@@ -68,12 +69,13 @@ function SnippetViewer() {
     });
   };
 
+  const skeleton = Array.apply(null, Array(20)).map(function () {});
+
   return (
     <>
       {snippetDisplayStore.snippetViewerObject &&
       snippetDisplayStore.snippetViewerObject.id !== undefined ? (
         <section className={styles.wrapper}>
-          {console.log(snippetDisplayStore, "snippetDisplayStore")}
           <div className={styles.contentContainer}>
             <div className={styles.subcontent}>
               <div className={styles.snippetInfo}>
@@ -230,20 +232,12 @@ function SnippetViewer() {
           </div>
         </section>
       ) : (
-        <div className={styles.loadingWrap}>
-          <Oval
-            height={80}
-            width={80}
-            color="#07ffc5"
-            wrapperStyle={{}}
-            wrapperClass=""
-            visible={true}
-            ariaLabel="oval-loading"
-            secondaryColor="#07ffc5"
-            strokeWidth={2}
-            strokeWidthSecondary={2}
-          />
-        </div>
+        <>
+          {skeleton.map((e, i) => {
+            console.log(e, "JERE");
+            return <SnippetSkeleton />;
+          })}
+        </>
       )}
     </>
   );

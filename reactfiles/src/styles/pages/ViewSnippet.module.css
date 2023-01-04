@@ -1,7 +1,7 @@
 .wrapper {
   display: flex;
   min-height: 100%;
-  padding: 0rem 1rem;
+  padding: 1rem;
   column-gap: 1rem;
 }
 

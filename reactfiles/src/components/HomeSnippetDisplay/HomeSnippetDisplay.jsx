@@ -5,10 +5,10 @@ import styles from "../HomeSnippetDisplay/HomeSnippetDisplay.module.css";
 import SnippetShowCase from "../SnippetShowCase/SnippetShowCase";
 import { AuthWrap } from "../../context/AuthWrap";
 import Fuse from "fuse.js";
-import { Oval } from "react-loader-spinner";
 import { useNavigate, Link } from "react-router-dom";
 import { SnippetDisplayContext } from "../../context/SnippetDisplayContext";
 import baseUrl from "../../api/backendfiles";
+import SnippetSkeleton from "../SnippetSkeleton/SnippetSkeleton";
 
 function HomeSnippetDisplay() {
   const { snippetStore, setSnippetStore } = useContext(SnippetContext);
@@ -111,6 +111,8 @@ function HomeSnippetDisplay() {
     getSnippets();
   }, []);
 
+  const skeleton = Array.apply(null, Array(20)).map(function () {});
+
   return (
     <>
       {snippetStore.snippetArray ? (
@@ -133,19 +135,11 @@ function HomeSnippetDisplay() {
           </div>
         )
       ) : (
-        <div className={styles.loadingWrap}>
-          <Oval
-            height={80}
-            width={80}
-            color="#07ffc5"
-            wrapperStyle={{}}
-            wrapperClass=""
-            visible={true}
-            ariaLabel="oval-loading"
-            secondaryColor="#07ffc5"
-            strokeWidth={2}
-            strokeWidthSecondary={2}
-          />
+        <div className={styles.wrapper}>
+          {skeleton.map((e, i) => {
+            console.log(e, "JERE");
+            return <SnippetSkeleton />;
+          })}
         </div>
       )}
     </>

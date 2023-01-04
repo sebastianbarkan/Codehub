@@ -1,15 +1,13 @@
 .wrapper {
   display: flex;
   justify-content: space-between;
-  background-color: #282f2e;
-  box-shadow: 0px 2px 10px 0px rgb(0 0 0), 0px 4px 10px 0px rgb(0 0 0 / 64%);
   border-radius: 8px;
   align-items: center;
   width: 100%;
-  padding: 0.75rem 2rem 0.75rem 2rem;
+  padding: 0;
 }
 
-.infoWrapper {
+.section {
   display: flex;
   align-items: center;
   column-gap: 1rem;
@@ -28,9 +26,10 @@
 }
 
 .title {
-  color: white;
+  font-family: "Satoshi", sans-serif;
+  color: rgba(255, 255, 255, 0.721);
   justify-self: center;
-  font-size: 1.75rem;
+  font-size: 2rem;
   padding: 0 0 0 0;
 }
 
@@ -52,8 +51,15 @@
 }
 
 .username {
-  color: white;
+  color: #07ffc5;
   font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.avatar {
+  width: 45px;
+  border-radius: 10px;
+  border: 2px solid #07ffc5;
 }
 
 @media screen and (max-width: 900px) {

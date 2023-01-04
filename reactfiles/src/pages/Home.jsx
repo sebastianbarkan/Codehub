@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import Sidebar from "../components/Sidebar/Sidebar";
-import HomeSnippets from "../components/HomeSnippets/HomeSnippets";
 import { useContext } from "react";
 import { AuthWrap } from "../context/AuthWrap";
 import { useNavigate } from "react-router-dom";
@@ -8,17 +7,14 @@ import SnippetDisplay from "../components/SnippetDisplay/SnippetDisplay";
 import styles from "../styles/pages/Home.module.css";
 import Header from "../components/Header/Header";
 import { useState } from "react";
+import HomeControls from "../components/HomeControls/HomeControls";
+import HomeSnippetDisplay from "../components/HomeSnippetDisplay/HomeSnippetDisplay";
 
 function Home() {
   const { auth } = useContext(AuthWrap);
   const [editActive, setEditActive] = useState(false);
   const [saveEditModal, setSaveEditModal] = useState(false);
   const [link, setLink] = useState("");
-  const [sidebarActive, setSidebarActive] = useState(true);
-
-  const toggleSidebarActive = () => {
-    setSidebarActive(!sidebarActive);
-  };
 
   let navigate = useNavigate();
 
@@ -61,17 +57,8 @@ function Home() {
         <div className={styles.container}>
           <Header></Header>
           <div className={styles.contentWrap}>
-            <HomeSnippets
-              toggleSidebarActive={toggleSidebarActive}
-            ></HomeSnippets>
-            <SnippetDisplay
-              updateActiveEdit={updateActiveEdit}
-              cancelActiveEdit={cancelActiveEdit}
-              link={link}
-              sidebarActive={sidebarActive}
-              saveEditModal={saveEditModal}
-              cancelSaveEditModal={cancelSaveEditModal}
-            ></SnippetDisplay>
+            <HomeControls />
+            <HomeSnippetDisplay />
           </div>
         </div>
       </section>

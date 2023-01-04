@@ -2,6 +2,12 @@ import React, { useContext, useState } from "react";
 import styles from "./SnippetShowCase.module.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import { SnippetDisplayContext } from "../../context/SnippetDisplayContext";
+import {
+  HeartIcon,
+  CodeBracketIcon,
+  StarIcon,
+  CheckIcon,
+} from "@heroicons/react/24/solid";
 import { FaStar, FaHeart, FaCheck } from "react-icons/fa";
 import {
   SandpackProvider,
@@ -11,7 +17,6 @@ import {
 import { AuthWrap } from "../../context/AuthWrap";
 import Avatar from "boring-avatars";
 import { useEffect } from "react";
-import baseUrl from "../../api/backendfiles";
 import SaveSnippet from "../../utilities/saveSnippet";
 import LikeSnippet from "../../utilities/likeSnippet";
 
@@ -120,174 +125,101 @@ function SnippetShowCase(props) {
   };
 
   return (
-    <>
-      <div
-        className={
-          location.pathname === "/searchsnippets"
-            ? styles.searchWrapper
-            : snippetDisplayStore.snippetObject === undefined ||
-              snippetDisplayStore.snippetObject === null
-            ? styles.wrapper
-            : snippetDisplayStore.snippetObject.id === props.info.id
-            ? styles.selectedWrapper
-            : styles.wrapper
+    <div
+      className={styles.wrapper}
+      onClick={() => {
+        if (location.pathname !== "/home") {
+          setSnippetDisplayStore({
+            ...snippetDisplayStore,
+            snippetViewerObject: props.info,
+          });
+          navigate(`/viewsnippet/${props.info.title}`);
+        } else {
+          localStorage.setItem(
+            "snippetDisplayArray",
+            JSON.stringify(props.info)
+          );
+          setSnippetDisplayStore({
+            ...snippetDisplayStore,
+            snippetObject: JSON.parse(
+              localStorage.getItem("snippetDisplayArray")
+            ),
+          });
         }
-        onClick={() => {
-          if (location.pathname !== "/home") {
-            setSnippetDisplayStore({
-              ...snippetDisplayStore,
-              snippetViewerObject: props.info,
-            });
-            navigate(`/viewsnippet/${props.info.title}`);
-          } else {
-            localStorage.setItem(
-              "snippetDisplayArray",
-              JSON.stringify(props.info)
-            );
-            setSnippetDisplayStore({
-              ...snippetDisplayStore,
-              snippetObject: JSON.parse(
-                localStorage.getItem("snippetDisplayArray")
-              ),
-            });
-          }
-        }}
-      >
-        {location.pathname !== "/home" ? (
-          <>
-            <div className={styles.rightWrap}>
-              <div className={styles.header}>
-                <h1 className={styles.title}>{props.info.title}</h1>
-              </div>
-              <div className={styles.subheader}>
-                <div className={styles.userWrap}>
-                  <Avatar
-                    size={25}
-                    name={`${props.info.user_id}`}
-                    variant="beam"
-                    square={true}
-                  />
-                  <p className={styles.author}>{props.info.author}</p>
-                </div>
-                <p className={styles.date}>{dateFormat}</p>
-              </div>
-            </div>
-            <div className={styles.codeWrap}>
-              <SandpackProvider
-                template={props.info.language}
-                files={props.info.code_snippet}
-              >
-                <SandpackLayout>
-                  <SandpackPreview />
-                </SandpackLayout>
-              </SandpackProvider>
-            </div>
-
-            <div className={styles.actionsWrap}>
-              <div className={styles.buttonWrap}>
-                {auth.userData.liked !== null ? (
-                  Object.values(auth.userData.liked).includes(props.info.id) ? (
-                    <div
-                      className={styles.actionWrap}
-                      onClick={stopPropagation}
-                    >
-                      <FaHeart
-                        className={`${styles.actionIcon} ${styles.active}`}
-                      />
-                      <p className={styles.active}>{likes}</p>
-                    </div>
-                  ) : (
-                    <div
-                      className={styles.actionWrap}
-                      onClick={handleLikeSnippet}
-                    >
-                      <FaHeart className={styles.actionIcon} />
-                      <p>{likes}</p>
-                    </div>
-                  )
-                ) : (
-                  <div
-                    className={styles.actionWrap}
-                    onClick={handleLikeSnippet}
-                  >
-                    <FaHeart className={styles.actionIcon} />
-                    <p>{likes}</p>
-                  </div>
-                )}
-                {auth.userData.id === props.info.user_id ? null : auth.userData
-                    .saved !== null ? (
-                  Object.values(auth.userData.saved).includes(props.info.id) ? (
-                    <div
-                      className={styles.actionWrap}
-                      onClick={stopPropagation}
-                    >
-                      <FaCheck
-                        className={`${styles.actionIcon} ${styles.active}`}
-                      />
-                      <p className={styles.active}>Saved</p>
-                    </div>
-                  ) : (
-                    <div
-                      className={styles.actionWrap}
-                      onClick={handleSaveSnippet}
-                    >
-                      <FaStar className={styles.actionIcon} />
-                      <p className={styles.actionLabel}>Save</p>
-                    </div>
-                  )
-                ) : (
-                  <div
-                    className={styles.actionWrap}
-                    onClick={handleSaveSnippet}
-                  >
-                    <FaStar className={styles.actionIcon} />
-                    <p className={styles.actionLabel}>Save</p>
-                  </div>
-                )}
-              </div>
-              <p className={styles.language}>{props.info.language}</p>
-            </div>
-          </>
-        ) : (
-          <>
-            <div className={styles.rightWrap}>
-              <div className={styles.header}>
-                <h1 className={styles.title}>{props.info.title}</h1>
-              </div>
-              <div className={styles.subheader}>
-                <div className={styles.userWrap}>
-                  <Avatar
-                    size={25}
-                    name={`${props.info.user_id}`}
-                    variant="beam"
-                    square={true}
-                  />
-                  <p className={styles.author}>{props.info.author}</p>
-                </div>
-                <p className={styles.date}>{dateFormat}</p>
-              </div>
-            </div>
-
-            <SandpackProvider
-              template={props.info.language}
-              files={props.info.code_snippet}
-            >
-              <SandpackLayout>
-                <SandpackPreview />
-              </SandpackLayout>
-            </SandpackProvider>
-
-            <div className={styles.actionsWrapHome}>
-              <div className={styles.likesWrap}>
-                <FaHeart className={styles.actionIcon} />
-                <p>{props.info.likes}</p>
-              </div>
-              <p className={styles.language}>{props.info.language}</p>
-            </div>
-          </>
-        )}
+      }}
+    >
+      <div className={styles.display}>
+        <div className={styles.codeWrap}>
+          <SandpackProvider
+            template={props.info.language}
+            files={props.info.code_snippet}
+          >
+            <SandpackLayout>
+              <SandpackPreview
+                showRefreshButton={false}
+                showOpenInCodeSandbox={false}
+              />
+            </SandpackLayout>
+          </SandpackProvider>
+          <div className={styles.highlightedSnippetInfo}>
+            <span className={styles.authorWrap}>
+              <Avatar size={25} />
+              <p className={styles.author}>{props.info.author}</p>
+            </span>
+            <p className={styles.date}>{dateFormat}</p>
+          </div>
+        </div>
       </div>
-    </>
+
+      <div className={styles.infoWrap}>
+        <h1 className={styles.title}>{props.info.title}</h1>
+        <div className={styles.actionsWrap}>
+          <div className={styles.buttonWrap}>
+            {auth.userData.liked !== null ? (
+              Object.values(auth.userData.liked).includes(props.info.id) ? (
+                <div className={styles.actionWrap} onClick={stopPropagation}>
+                  <HeartIcon className={styles.icon} />
+                  <p className={styles.active}>{likes}</p>
+                </div>
+              ) : (
+                <div className={styles.actionWrap} onClick={handleLikeSnippet}>
+                  <HeartIcon className={styles.icon} />
+                  <p className={styles.actionLabel}>{likes}</p>
+                </div>
+              )
+            ) : (
+              <div className={styles.actionWrap} onClick={handleLikeSnippet}>
+                <HeartIcon className={styles.icon} />
+                <p className={styles.actionLabel}>{likes}</p>
+              </div>
+            )}
+            {auth.userData.id === props.info.user_id ? null : auth.userData
+                .saved !== null ? (
+              Object.values(auth.userData.saved).includes(props.info.id) ? (
+                <div className={styles.actionWrap} onClick={stopPropagation}>
+                  <CheckIcon className={styles.icon} />
+                  <p className={styles.actionLabel}>Saved</p>
+                </div>
+              ) : (
+                <div className={styles.actionWrap} onClick={handleSaveSnippet}>
+                  <StarIcon className={styles.icon} />
+                  <p className={styles.actionLabel}>Save</p>
+                </div>
+              )
+            ) : (
+              <div className={styles.actionWrap} onClick={handleSaveSnippet}>
+                <StarIcon className={styles.icon} />
+                <p className={styles.actionLabel}>Save</p>
+              </div>
+            )}
+          </div>
+          <span className={styles.languageSpan}>
+            <CodeBracketIcon className={styles.icon} />
+            <p className={styles.language}>{props.info.language}</p>
+          </span>
+        </div>
+      </div>
+    </div>
   );
 }
 

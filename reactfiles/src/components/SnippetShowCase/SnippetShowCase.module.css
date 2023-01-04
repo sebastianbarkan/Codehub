@@ -1,46 +1,30 @@
 .wrapper {
   color: white;
-  background-color: #282f2e;
-  padding: 1rem 1.25rem;
-  border-radius: 8px;
+  background-color: #333748;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   cursor: pointer;
   border: 1px solid #212121;
-  box-shadow: 0px 2px 8px 0px rgb(0 0 0 / 50%),
-    0px 4px 16px 0px rgb(0 0 0 / 50%);
 }
 
-.selectedWrapper {
-  color: white;
-  background-color: #282f2e;
-  padding: 1rem 1.25rem;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  cursor: pointer;
-  box-shadow: 0px 2px 8px 0px rgb(0 0 0 / 50%),
-    0px 4px 16px 0px rgb(0 0 0 / 50%);
-  border: solid 1px #07ffc5;
-}
-
-.searchWrapper {
-  color: white;
-  background-color: #282f2e;
-  padding: 1rem 1.25rem;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  cursor: pointer;
-  box-shadow: 0px 2px 8px 0px rgb(0 0 0 / 50%),
-    0px 4px 16px 0px rgb(0 0 0 / 50%);
-  border: 1px solid #212121;
+.wrapper:hover {
+  transform: translateY(-5px);
+  filter: drop-shadow(0 14px 30px rgba(0, 0, 0, 0.125));
 }
 
 .rightWrap {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.infoWrap {
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.75rem;
+  color: rgba(255, 255, 255, 0.297);
 }
 
 .leftWrap {
@@ -75,22 +59,45 @@
 .title {
   padding: 0;
   font-size: 1.65rem;
-  max-width: 400px;
+  max-width: 350px;
   word-break: break-all;
+  color: rgba(255, 255, 255, 0.721);
   overflow-x: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  text-decoration: underline;
-  text-decoration-color: #07ffc5;
+}
+
+.display {
+  position: relative;
+}
+
+.display * {
+  max-height: 200px;
+  border-radius: 10px 10px 0px 0px;
+}
+
+.highlightedSnippetInfo {
+  position: absolute;
+  border-radius: 0px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: #0fffc7;
+  background-color: #018466;
+  backdrop-filter: blur(5px);
+  padding: 0.625rem 1.25rem;
 }
 
 .date {
   padding: 0 0 0 0;
-  color: #aaaaaa;
+  display: flex;
+  align-items: center;
 }
 
 .language {
-  color: #ffdd00;
   font-weight: 500;
 }
 
@@ -98,8 +105,18 @@
   padding: 0 0 0.5rem 0;
 }
 
+.authorWrap {
+  display: flex;
+  align-items: center;
+  column-gap: 0.5rem;
+}
+
 .author {
-  color: #a0a0a0;
+  font-weight: 600;
+  max-width: 160px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .language-wrapper {
@@ -148,8 +165,12 @@
 .actionsWrap {
   display: flex;
   justify-content: space-between;
-  padding: 1rem 0 0 0;
+  padding: 0;
   column-gap: 2rem;
+}
+
+.actionLabel {
+  color: rgba(255, 255, 255, 0.297);
 }
 
 .likesWrap {
@@ -159,8 +180,18 @@
   color: #a0a0a0;
 }
 
-.active {
-  color: #07ffc5;
+.icon {
+  width: 34px;
+  fill: none;
+  color: transparent;
+  stroke-width: 1.5px;
+  stroke: rgba(255, 255, 255, 0.297);
+}
+
+.languageSpan {
+  display: flex;
+  align-items: center;
+  column-gap: 0.5rem;
 }
 
 .actionsWrapHome {
@@ -178,7 +209,7 @@
 
 .actionWrap {
   display: flex;
-  column-gap: 0.55rem;
+  column-gap: 0.5rem;
   cursor: pointer;
   color: #a0a0a0;
   align-items: center;

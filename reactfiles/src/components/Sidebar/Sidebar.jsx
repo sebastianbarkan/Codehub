@@ -1,12 +1,10 @@
 import React, { useContext } from "react";
 import {
-  FaPlusCircle,
-  FaSearch,
-  FaLayerGroup,
-  FaCog,
-  FaCompass,
-  FaSignOutAlt,
-} from "react-icons/fa";
+  ArrowRightOnRectangleIcon,
+  Square3Stack3DIcon,
+  PlusCircleIcon,
+  HomeIcon,
+} from "@heroicons/react/24/solid";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { AuthWrap } from "../../context/AuthWrap";
 import styles from "./Sidebar.module.css";
@@ -49,7 +47,7 @@ function Sidebar({ editActive, updateSaveEditModal, updateLink }) {
   return (
     <>
       <section className={styles.wrapper}>
-        <div className={styles["top-links"]}>
+        <div className={styles.section}>
           <Link
             to="/home"
             preventScrollReset={true}
@@ -57,10 +55,7 @@ function Sidebar({ editActive, updateSaveEditModal, updateLink }) {
               location.pathname === "/home" ? styles.linkSelected : styles.link
             }
           >
-            <FaLayerGroup
-              id="firstSidebarItem"
-              className={`${styles["sidebar-icon"]} ${styles["sidebar-item"]}`}
-            />
+            <HomeIcon className={styles.icon} />
           </Link>
           <Link
             to={editActive ? "#" : "/createsnippet"}
@@ -77,9 +72,7 @@ function Sidebar({ editActive, updateSaveEditModal, updateLink }) {
                 : styles.link
             }
           >
-            <FaPlusCircle
-              className={`${styles["sidebar-icon"]} ${styles["sidebar-item"]}`}
-            />
+            <PlusCircleIcon className={styles.icon} />
           </Link>
           <Link
             to={editActive ? "#" : "/searchsnippets"}
@@ -96,16 +89,13 @@ function Sidebar({ editActive, updateSaveEditModal, updateLink }) {
                 : styles.link
             }
           >
-            <FaCompass
-              className={`${styles["sidebar-icon"]} ${styles["sidebar-item"]}`}
-            />
+            <Square3Stack3DIcon className={styles.icon} />
           </Link>
         </div>
 
-        <div className={styles["bottom-links"]}>
-          <FaSignOutAlt
-            id="lastSidebarItem"
-            className={`${styles["sidebar-icon"]} ${styles["sidebar-item"]}`}
+        <div className={styles.section}>
+          <p
+            className={styles.link}
             onClick={(e) => {
               if (editActive) {
                 updateSaveEditModal();
@@ -113,7 +103,9 @@ function Sidebar({ editActive, updateSaveEditModal, updateLink }) {
                 logout(e);
               }
             }}
-          />
+          >
+            <ArrowRightOnRectangleIcon className={styles.icon} />
+          </p>
         </div>
       </section>
     </>

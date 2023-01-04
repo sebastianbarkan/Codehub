@@ -6,12 +6,6 @@ import { AuthWrap } from "../context/AuthWrap";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header/Header";
 function CreateSnippet() {
-  const [createSnippet, setCreateSnippet] = useState(false);
-
-  const runCreateSnippet = () => {
-    setCreateSnippet(true);
-  };
-
   const { auth } = useContext(AuthWrap);
   let navigate = useNavigate();
 
@@ -28,12 +22,9 @@ function CreateSnippet() {
       <section className={styles.wrapper}>
         <Sidebar />
         <div className={styles.container}>
-          <Header runCreateSnippet={runCreateSnippet}></Header>
+          <Header></Header>
           <div className={styles.contentWrap}>
-            <CreateSnippetForm
-              createSnippet={createSnippet}
-              setCreateSnippet={setCreateSnippet}
-            ></CreateSnippetForm>
+            <CreateSnippetForm></CreateSnippetForm>
           </div>
         </div>
       </section>
