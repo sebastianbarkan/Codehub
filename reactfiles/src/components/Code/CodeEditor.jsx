@@ -2,12 +2,12 @@ import React, { useEffect } from "react";
 import { SandpackCodeEditor, useSandpack } from "@codesandbox/sandpack-react";
 import styles from "../Code/CodeEditor.module.css";
 
-function CodeEditor(props) {
+function CodeEditor({ updateCode }) {
   const { sandpack } = useSandpack();
   const { files, activeFile } = sandpack;
 
   useEffect(() => {
-    props.updateCode(files);
+    updateCode(files);
   }, [files]);
 
   return (

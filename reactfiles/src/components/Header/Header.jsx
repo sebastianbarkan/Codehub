@@ -1,17 +1,13 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import styles from "../Header/Header.module.css";
-import { useLocation } from "react-router-dom";
-import { query, SearchContext, setQuery } from "../../context/SearchContext";
 import { AuthWrap } from "../../context/AuthWrap";
 import Avatar from "boring-avatars";
 import Searchbar from "../Searchbar/Searchbar";
 import { ReactComponent as Logo } from "../../assets/logo.svg";
 
 function Header() {
-  const location = useLocation();
   const { auth } = useContext(AuthWrap);
-  const { query, setQuery } = useContext(SearchContext);
-
+  console.log(auth.userData.id, "ID");
   return (
     <>
       <div className={styles.wrapper}>
@@ -22,13 +18,15 @@ function Header() {
         </div>
         {auth.userData ? (
           <div className={styles.userWrap}>
-            <Avatar
-              size={30}
-              name={`${auth.userData.id}`}
-              variant="beam"
-              square={true}
-              className={styles.avatar}
-            />
+            <span className={styles.avatarWrap}>
+              <Avatar
+                size={35}
+                name={`${auth.userData.id}`}
+                variant="beam"
+                square={true}
+                className={styles.avatar}
+              />
+            </span>
             <p className={styles.username}>{auth.userData.username}</p>
           </div>
         ) : null}

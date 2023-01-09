@@ -1,21 +1,50 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   SandpackProvider,
   SandpackPreview,
   SandpackFileExplorer,
   SandpackCodeViewer,
 } from "@codesandbox/sandpack-react";
-import styles from "./SnippetViewer.module.css";
-import SnippetViewerHeader from "../SnippetViewerHeader/SnippetViewerHeader";
+import styles from "./Snippet.module.css";
+import SnippetHeader from "../SnippetHeader/SnippetHeader";
 import { SnippetDisplayContext } from "../../context/SnippetDisplayContext";
-function SnippetViewer() {
+import CodeEditor from "../Code/CodeEditor";
+import UpdateSnippet from "../../utilities/updateSnippet";
+
+function Snippet() {
   const { snippetDisplayStore } = useContext(SnippetDisplayContext);
+  const [editActive, setEditActive] = useState(false);
+  const [code, setCode] = useState("");
+  const [title, setTitle] = useState(
+    snippetDisplayStore.snippetObject !== undefined
+      ? snippetDisplayStore.snippetObject.title
+      : ""
+  );
+
+  const handleUpdateSnippet = async () => {
+    //send snippet id and updated code to backend and database
+    const updateSnippet = await UpdateSnippet(
+      snippetDisplayStore.snippetObject.id,
+      code,
+      title
+    );
+
+    setCode(updateSnippet[0].code_snippet);
+    setEditActive(false);
+    setTitle(title);
+  };
 
   return (
     <>
-      {snippetDisplayStore.snippetViewerObject !== undefined ? (
-        <div className={styles.wrapper}>
-          <SnippetViewerHeader />
+      <div className={styles.wrapper}>
+        <SnippetHeader
+          setEditActive={setEditActive}
+          editActive={editActive}
+          title={title}
+          handleUpdateSnippet={handleUpdateSnippet}
+          setTitle={setTitle}
+        />
+        {snippetDisplayStore.snippetObject !== undefined ? (
           <SandpackProvider
             theme={{
               colors: {
@@ -51,23 +80,29 @@ function SnippetViewer() {
                 lineHeight: "20px",
               },
             }}
-            template={snippetDisplayStore.snippetViewerObject.language}
-            customSetup={snippetDisplayStore.snippetViewerObject.language}
+            template={snippetDisplayStore.snippetObject.language}
+            customSetup={{
+              files: snippetDisplayStore.snippetObject.code_snippet,
+            }}
           >
             <div className={styles.editorLayout}>
               <div className={styles.sidebar}>
                 <SandpackFileExplorer />
               </div>
               <div className={styles.filesWrap}>
-                <SandpackCodeViewer />
+                {editActive ? (
+                  <CodeEditor updateCode={setCode} />
+                ) : (
+                  <SandpackCodeViewer />
+                )}
                 <SandpackPreview />
               </div>
             </div>
           </SandpackProvider>
-        </div>
-      ) : null}
+        ) : null}
+      </div>
     </>
   );
 }
 
-export default SnippetViewer;
+export default Snippet;

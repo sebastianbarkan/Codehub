@@ -215,12 +215,12 @@
   align-items: center;
 }
 
-.actionWrap:hover {
-  color: #07ffc5;
-}
-
 .snippetWrap {
   cursor: pointer;
+}
+
+.authorWrap * {
+  border-radius: 0px;
 }
 
 @media screen and (max-width: 475px) {

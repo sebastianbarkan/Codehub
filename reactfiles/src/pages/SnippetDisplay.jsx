@@ -1,17 +1,17 @@
 import React from "react";
 import Sidebar from "../components/Sidebar/Sidebar";
 import Header from "../components/Header/Header";
-import styles from "../styles/pages/ViewSnippet.module.css";
-import SnippetViewer from "../components/SnippetViewer/SnippetViewer";
+import styles from "../styles/pages/SnippetDisplay.module.css";
+import Snippet from "../components/Snippet/Snippet";
 
-function ViewSnippet() {
+function SnippetDisplay() {
   return (
     <>
       <section className={styles.wrapper}>
         <Sidebar />
         <div className={styles.contentWrap}>
           <Header />
-          <SnippetViewer
+          <Snippet
             getKey={(location) => {
               return location.pathname;
             }}
@@ -22,4 +22,4 @@ function ViewSnippet() {
   );
 }
 
-export default ViewSnippet;
+export default SnippetDisplay;

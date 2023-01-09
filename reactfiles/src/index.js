@@ -3,18 +3,14 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App.jsx";
 import reportWebVitals from "./reportWebVitals";
-import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  RouterProvider,
-  Route,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home";
 import SearchSnippets from "./pages/SearchSnippets";
 import CreateSnippet from "./pages/CreateSnippet";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import ViewSnippet from "./pages/ViewSnippet";
+import SnippetDisplay from "./pages/SnippetDisplay";
 
 const router = createBrowserRouter([
   {
@@ -44,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: "/viewsnippet/:snippetTitle",
         element: <ViewSnippet />,
+      },
+      {
+        path: "/snippetdisplay/:snippetTitle",
+        element: <SnippetDisplay />,
       },
     ],
   },

@@ -13,8 +13,7 @@ import SearchControls from "../components/SearchControls/SearchControls";
 
 function SearchSnippets() {
   const { auth } = useContext(AuthWrap);
-  const { query } = useContext(SearchContext);
-  const [showFilters, setShowFilters] = useState(false);
+  const { query, sortValue, searchLanguage } = useContext(SearchContext);
   const [snippets, setSnippets] = useState();
   const [likesSort, setLikesSort] = useState(false);
   let navigate = useNavigate();
@@ -46,12 +45,6 @@ function SearchSnippets() {
     getAllSnippets();
   }, []);
 
-  const [sortValue, setSortValue] = useState("Latest");
-  const [languageValue, setLanguageValue] = useState({
-    value: "All languages",
-    label: "All languages",
-  });
-
   const searchFilter = (item, i) => {
     if (query === "") {
       return item;
@@ -72,98 +65,20 @@ function SearchSnippets() {
     }
   };
 
+  const categorySort = (a, b) => {
+    if (sortValue === "Recents") {
+      return b.created_at - a.created_at;
+    } else if (sortValue === "Likes") {
+      return b.likes - a.likes;
+    }
+  };
+
   const languageFilter = (item, i) => {
-    if (languageValue.value === "All languages") {
+    if (searchLanguage === "All languages") {
       return item;
-    } else {
-      return item.language === languageValue.value;
+    } else if (searchLanguage === item.language) {
+      return item;
     }
-  };
-
-  const options = [
-    { value: "Latest", label: "Latest" },
-    { value: "Likes", label: "Likes" },
-  ];
-
-  const languageOptions = [
-    { value: "All languages", label: "All languages" },
-    { value: "react-ts", label: "react/typescript" },
-    { value: "react", label: "react" },
-    { value: "angular", label: "angular" },
-    { value: "vue", label: "vue" },
-    { value: "vue3", label: "vue3" },
-    { value: "vanilla-ts", label: "typescript" },
-    { value: "vanilla", label: "vanilla js" },
-  ];
-
-  //custom styles for react-select
-  const customStyles = {
-    option: (provided) => ({
-      ...provided,
-      padding: 20,
-      cursor: "pointer",
-      fontSize: "1.2rem",
-    }),
-    control: () => ({
-      cursor: "pointer",
-      display: "flex",
-      color: "white",
-      border: "1px solid rgb(255, 255, 255, .3)",
-      backgroundColor: "none",
-      width: "200px",
-      fontSize: "1.2rem",
-      borderRadius: "4px",
-    }),
-    menu: (provided, state) => ({
-      ...provided,
-      color: "black",
-      zIndex: 99,
-      width: "100%",
-    }),
-    placeholder: (provided, state) => ({
-      ...provided,
-      color: "white",
-      fontSize: "1.2rem",
-    }),
-    singleValue: (provided, state) => ({
-      ...provided,
-      opacity: state.isDisabled ? "0.5" : "1",
-      transition: "opacity 300ms",
-      color: "white",
-    }),
-    container: (provided, state) => ({
-      ...provided,
-      color: "white",
-    }),
-    input: (provided, state) => ({
-      ...provided,
-      color: "white",
-    }),
-  };
-
-  const handleSearchSort = (choice) => {
-    if (choice === "Latest") {
-      //sort by date created
-      let latestSort = snippets.sort((a, b) => {
-        let aTime = new Date(a.created_at).getTime();
-        let bTime = new Date(b.created_at).getTime();
-        return bTime - aTime;
-      });
-      setSnippets(latestSort);
-      setSortValue(choice);
-    } else if (choice === "Likes") {
-      //sort by the amount of likes
-      let likeSort = snippets.sort((a, b) => {
-        return b.likes - a.likes;
-      });
-      setSnippets(likeSort);
-      setSortValue(choice);
-      setLikesSort(!likesSort);
-    }
-  };
-
-  const toggleFilters = () => {
-    setShowFilters(!showFilters);
   };
 
   //skeleton array for placeholder loading
@@ -182,20 +97,18 @@ function SearchSnippets() {
                 snippets
                   .filter(searchFilter)
                   .filter(languageFilter)
+                  .sort(categorySort)
                   .map((e, i) => {
                     return (
-                      <>
-                        <SnippetShowCase
-                          info={e}
-                          likeSort={likesSort}
-                        ></SnippetShowCase>
-                      </>
+                      <SnippetShowCase
+                        info={e}
+                        likeSort={likesSort}
+                      ></SnippetShowCase>
                     );
                   })
               ) : (
                 <>
-                  {skeleton.map((e, i) => {
-                    console.log(e, "JERE");
+                  {skeleton.map(() => {
                     return <SnippetSkeleton />;
                   })}
                 </>

@@ -6,7 +6,7 @@ import Fuse from "fuse.js";
 import styles from "../Searchbar/Searchbar.module.css";
 import { FaSearch, FaTimesCircle } from "react-icons/fa";
 import Avatar from "boring-avatars";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { SearchContext } from "../../context/SearchContext";
 
 function Searchbar() {
@@ -18,18 +18,10 @@ function Searchbar() {
   );
   const { setQuery } = useContext(SearchContext);
   let navigate = useNavigate();
-  let location = useLocation();
-
-  const handleSearchQuery = (e) => {
-    e.preventDefault();
-    setCurrentQuery(e.target.value);
-  };
 
   const handleSearchEnter = (e) => {
     if (e.key === "Enter") {
-      console.log("e");
       setQuery(currentQuery);
-
       navigate("/searchsnippets");
     }
   };
@@ -86,11 +78,13 @@ function Searchbar() {
           type="text"
           className={styles.input}
           value={currentQuery}
-          onChange={handleSearchQuery}
+          onChange={(e) => setCurrentQuery(e.target.value)}
           placeholder="Search..."
           onKeyDown={handleSearchEnter}
         ></input>
-        <button className={styles.searchButton}>
+        <button
+          className={currentQuery !== "" ? styles.hidden : styles.searchButton}
+        >
           <FaSearch className={styles.searchIcon} />
         </button>
         <FaTimesCircle
@@ -117,26 +111,12 @@ function Searchbar() {
                       <div
                         className={styles.resultItem}
                         onClick={() => {
-                          if (location.pathname !== "/home") {
-                            setSnippetDisplayStore({
-                              ...snippetDisplayStore,
-                              snippetViewerObject: e,
-                            });
-                            setCurrentQuery("");
-                            navigate(`/viewsnippet/${e.title}`);
-                          } else {
-                            localStorage.setItem(
-                              "snippetDisplayArray",
-                              JSON.stringify(e)
-                            );
-                            setCurrentQuery("");
-                            setSnippetDisplayStore({
-                              ...snippetDisplayStore,
-                              snippetObject: JSON.parse(
-                                localStorage.getItem("snippetDisplayArray")
-                              ),
-                            });
-                          }
+                          setSnippetDisplayStore({
+                            ...snippetDisplayStore,
+                            snippetViewerObject: e,
+                          });
+                          setCurrentQuery("");
+                          navigate(`/viewsnippet/${e.title}`);
                         }}
                       >
                         <Avatar

@@ -8,7 +8,6 @@ import {
   StarIcon,
   CheckIcon,
 } from "@heroicons/react/24/solid";
-import { FaStar, FaHeart, FaCheck } from "react-icons/fa";
 import {
   SandpackProvider,
   SandpackLayout,
@@ -19,12 +18,12 @@ import Avatar from "boring-avatars";
 import { useEffect } from "react";
 import SaveSnippet from "../../utilities/saveSnippet";
 import LikeSnippet from "../../utilities/likeSnippet";
+import getFormattedDate from "../../utilities/getFormattedDate";
 
 function SnippetShowCase(props) {
   let navigate = useNavigate();
   let location = useLocation();
-  let dateArr = props.info.created_at.split("");
-  let dateFormat = dateArr.splice(0, 10);
+  let dateFormat = getFormattedDate(props.info.created_at);
   const [likes, setLikes] = useState(props.info.likes);
   const { snippetDisplayStore, setSnippetDisplayStore } = useContext(
     SnippetDisplayContext
@@ -145,6 +144,7 @@ function SnippetShowCase(props) {
               localStorage.getItem("snippetDisplayArray")
             ),
           });
+          navigate(`/snippetdisplay/${props.info.title}}`);
         }
       }}
     >
@@ -163,7 +163,13 @@ function SnippetShowCase(props) {
           </SandpackProvider>
           <div className={styles.highlightedSnippetInfo}>
             <span className={styles.authorWrap}>
-              <Avatar size={25} />
+              <Avatar
+                size={25}
+                name={`${props.info.user_id}`}
+                variant="beam"
+                square={true}
+                className={styles.avatar}
+              />
               <p className={styles.author}>{props.info.author}</p>
             </span>
             <p className={styles.date}>{dateFormat}</p>

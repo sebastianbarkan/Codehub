@@ -1,10 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
 import Sidebar from "../components/Sidebar/Sidebar";
 import styles from "../styles/pages/CreateSnippet.module.css";
-import CreateSnippetForm from "../components/CreateSnippetForm/CreateSnippetForm.jsx";
 import { AuthWrap } from "../context/AuthWrap";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header/Header";
+import SnippetEditor from "../components/SnippetEditor/SnippetEditor";
+
 function CreateSnippet() {
   const { auth } = useContext(AuthWrap);
   let navigate = useNavigate();
@@ -24,7 +25,7 @@ function CreateSnippet() {
         <div className={styles.container}>
           <Header></Header>
           <div className={styles.contentWrap}>
-            <CreateSnippetForm></CreateSnippetForm>
+            <SnippetEditor />
           </div>
         </div>
       </section>

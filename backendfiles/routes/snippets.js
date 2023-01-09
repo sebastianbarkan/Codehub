@@ -142,17 +142,29 @@ router.post("/getSaved", (req, res) => {
 router.post("/updateSnippet", (req, res) => {
   const snippet = JSON.stringify(req.body[1]);
   let encode = Buffer.from(snippet).toString("base64");
-
   try {
     connection.query(
-      `UPDATE snippets SET code_snippet ="${encode}" WHERE id=${req.body[0]};`,
+      `UPDATE snippets SET code_snippet="${encode}", title="${req.body[2]}" WHERE id=${req.body[0]};`,
       function (err, results) {
-        res.send("updated");
+        fetchUpdates();
       }
     );
   } catch (err) {
     console.log(err);
   }
+
+  const fetchUpdates = () => {
+    try {
+      connection.query(
+        `SELECT code_snippet, title FROM snippets WHERE id=${req.body[0]};`,
+        function (err, results) {
+          res.send(results);
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
 });
 
 router.post("/removeFromSaved", (req, res) => {

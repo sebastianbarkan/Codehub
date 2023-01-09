@@ -1,15 +1,16 @@
 import "./App.css";
 import { Outlet, useNavigate, ScrollRestoration } from "react-router-dom";
-
 import { AuthWrap } from "./context/AuthWrap";
 import { SnippetContext } from "./context/SnippetContext";
 import { SearchContext } from "./context/SearchContext";
 import { SnippetDisplayContext } from "./context/SnippetDisplayContext";
 import { useEffect, useState } from "react";
 import baseUrl from "./api/backendfiles";
+
 function App() {
   let navigate = useNavigate();
 
+  //initialize all context values
   const [userData, setUserData] = useState(
     localStorage.getItem("userData") === null
       ? null
@@ -39,8 +40,31 @@ function App() {
     }
   }, []);
 
+  const [snippetType, setSnippetType] = useState(
+    localStorage.getItem("snippetType") === null
+      ? "recents"
+      : localStorage.getItem("snippetType")
+  );
+  const [query, setQuery] = useState("");
+  const [homeQuery, setHomeQuery] = useState("");
+  const [sortValue, setSortValue] = useState("Recents");
+  const [homeSortValue, setHomeSortValue] = useState("Recents");
+  const [language, setLanguage] = useState("All languages");
+  const [searchLanguage, setSearchLanguage] = useState("All languages");
+  const [auth, setAuth] = useState({
+    isAuthenticated: isAuthenticated,
+    userData: userData,
+  });
+
+  const [snippetDisplayStore, setSnippetDisplayStore] = useState({
+    snippetObject: snippetDisplayArray,
+    snippetViwerObject: snippetViwerObject,
+    update: false,
+    updateSnippetObject: setSnippetDisplayArray,
+  });
+
+  //Retrieve all snippets data
   const getSnippets = (id) => {
-    console.log("getsnippetsrun");
     try {
       fetch(`${baseUrl}/api/snippets/getSnippets?id=${id}`, {
         method: "GET",
@@ -99,21 +123,6 @@ function App() {
     }
   };
 
-  const [search, setSearch] = useState("");
-
-  const [snippetType, setSnippetType] = useState(
-    localStorage.getItem("snippetType") === null
-      ? "recents"
-      : localStorage.getItem("snippetType")
-  );
-
-  const [query, setQuery] = useState("");
-
-  const [auth, setAuth] = useState({
-    isAuthenticated: isAuthenticated,
-    userData: userData,
-  });
-
   const [snippetStore, setSnippetStore] = useState({
     snippetArray: snippetArray,
     updateSnippetArray: setSnippetArray,
@@ -123,22 +132,29 @@ function App() {
     changeSnippetType: setSnippetType,
   });
 
-  const [snippetDisplayStore, setSnippetDisplayStore] = useState({
-    snippetObject: snippetDisplayArray,
-    snippetViwerObject: snippetViwerObject,
-    update: false,
-    updateSnippetObject: setSnippetDisplayArray,
-  });
-
   return (
     <AuthWrap.Provider value={{ auth, setAuth }}>
       <SnippetContext.Provider value={{ snippetStore, setSnippetStore }}>
         <SnippetDisplayContext.Provider
           value={{ snippetDisplayStore, setSnippetDisplayStore }}
         >
-          <SearchContext.Provider value={{ query, setQuery }}>
+          <SearchContext.Provider
+            value={{
+              query,
+              setQuery,
+              homeQuery,
+              setHomeQuery,
+              sortValue,
+              setSortValue,
+              homeSortValue,
+              setHomeSortValue,
+              language,
+              setLanguage,
+              searchLanguage,
+              setSearchLanguage,
+            }}
+          >
             <Outlet />
-            <ScrollRestoration />
           </SearchContext.Provider>
         </SnippetDisplayContext.Provider>
       </SnippetContext.Provider>

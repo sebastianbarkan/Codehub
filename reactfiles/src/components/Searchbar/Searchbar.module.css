@@ -25,7 +25,7 @@
   flex-direction: column;
   z-index: 9999999;
   color: white;
-  background-color: #1c1c1c;
+  background-color: #41465b;
   border-radius: 8px;
   width: 100%;
 }
@@ -93,7 +93,7 @@
 }
 
 .resultItem:hover {
-  background-color: #2f2f2f;
+  background-color: #2a2e3c;
 }
 
 .author {

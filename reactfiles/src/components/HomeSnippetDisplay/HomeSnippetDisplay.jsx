@@ -10,13 +10,13 @@ import { SnippetDisplayContext } from "../../context/SnippetDisplayContext";
 import baseUrl from "../../api/backendfiles";
 import SnippetSkeleton from "../SnippetSkeleton/SnippetSkeleton";
 
-function HomeSnippetDisplay() {
+function HomeSnippetDisplay({ categorySort, languageFilter }) {
   const { snippetStore, setSnippetStore } = useContext(SnippetContext);
   const { snippetDisplayStore, setSnippetDisplayStore } = useContext(
     SnippetDisplayContext
   );
 
-  const { query } = useContext(SearchContext);
+  const { homeQuery } = useContext(SearchContext);
   const { auth } = useContext(AuthWrap);
 
   let navigate = useNavigate();
@@ -28,7 +28,7 @@ function HomeSnippetDisplay() {
 
   const searchFilter = (item, i) => {
     //if no search is entered return all items
-    if (query === "") {
+    if (homeQuery === "") {
       return item;
     } else {
       //if there is a search query use Fuse to return matching items
@@ -40,7 +40,7 @@ function HomeSnippetDisplay() {
 
       const fuse = new Fuse(snippetStore.snippetArray, options);
 
-      let ids = fuse.search(query).map((e) => {
+      let ids = fuse.search(homeQuery).map((e) => {
         return e.item.id;
       });
 
@@ -119,9 +119,13 @@ function HomeSnippetDisplay() {
         snippetStore.snippetArray.length > 0 ||
         (auth.userData.saved && Object.keys(auth.userData.saved).length > 0) ? (
           <div className={styles.wrapper}>
-            {snippetStore.snippetArray.filter(searchFilter).map((e) => {
-              return <SnippetShowCase info={e}></SnippetShowCase>;
-            })}
+            {snippetStore.snippetArray
+              .filter(searchFilter)
+              .filter(languageFilter)
+              .sort(categorySort)
+              .map((e) => {
+                return <SnippetShowCase info={e}></SnippetShowCase>;
+              })}
           </div>
         ) : (
           <div className={styles.noSnippetsWrap}>
@@ -137,7 +141,6 @@ function HomeSnippetDisplay() {
       ) : (
         <div className={styles.wrapper}>
           {skeleton.map((e, i) => {
-            console.log(e, "JERE");
             return <SnippetSkeleton />;
           })}
         </div>
