@@ -95,16 +95,18 @@ function SnippetViewerHeader() {
       </div>
 
       <div className={`${styles.section} ${styles.buttonSection}`}>
-        {Object.values(auth.userData.saved).includes(
-          snippetDisplayStore.snippetViewerObject.id
-        ) ? (
-          <label className={styles.addedLabel}>Added</label>
-        ) : (
-          <button className={styles.saveButton} onClick={handleSaveSnippet}>
-            <BookmarkSquareIcon className={styles.icon} />
-            <label className={styles.saveLabel}>Add to saved</label>
-          </button>
-        )}
+        {auth.userData.saved !== null && auth.userData.liked !== undefined ? (
+          <>
+            Object.values(auth.userData.saved).includes(
+            snippetDisplayStore.snippetViewerObject.id ) ? (
+            <label className={styles.addedLabel}>Added</label>) : (
+            <button className={styles.saveButton} onClick={handleSaveSnippet}>
+              <BookmarkSquareIcon className={styles.icon} />
+              <label className={styles.saveLabel}>Add to saved</label>
+            </button>
+            )
+          </>
+        ) : null}
       </div>
     </div>
   );

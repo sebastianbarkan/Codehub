@@ -31,9 +31,11 @@ router.get("/getSnippets", (req, res) => {
 });
 
 router.get("/getAllSnippets", (req, res) => {
+  console.log("conn", process.env.NODE_ENV);
   const userId = req.query.userId;
   try {
     connection.query(`SELECT * FROM snippets;`, function (err, results) {
+      console.log("err", err);
       let publicSnippets = results.filter((e, i) => {
         if (e.public === 1) {
           return e;

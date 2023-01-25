@@ -28,8 +28,8 @@ function SnippetShowCase(props) {
   const { snippetDisplayStore, setSnippetDisplayStore } = useContext(
     SnippetDisplayContext
   );
-
   const { auth, setAuth } = useContext(AuthWrap);
+
   useEffect(() => {
     setLikes(props.info.likes);
   }, [props.likeSort]);
@@ -181,7 +181,9 @@ function SnippetShowCase(props) {
         <h1 className={styles.title}>{props.info.title}</h1>
         <div className={styles.actionsWrap}>
           <div className={styles.buttonWrap}>
-            {auth.userData.liked !== null ? (
+            {console.log("auth", auth.userData.liked)}
+            {auth.userData.liked !== null &&
+            auth.userData.liked !== undefined ? (
               Object.values(auth.userData.liked).includes(props.info.id) ? (
                 <div className={styles.actionWrap} onClick={stopPropagation}>
                   <HeartIcon className={styles.icon} />
@@ -200,7 +202,7 @@ function SnippetShowCase(props) {
               </div>
             )}
             {auth.userData.id === props.info.user_id ? null : auth.userData
-                .saved !== null ? (
+                .saved !== null && auth.userData.saved !== undefined ? (
               Object.values(auth.userData.saved).includes(props.info.id) ? (
                 <div className={styles.actionWrap} onClick={stopPropagation}>
                   <CheckIcon className={styles.icon} />

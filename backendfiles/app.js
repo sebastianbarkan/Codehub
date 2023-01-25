@@ -41,7 +41,7 @@ app.use(
   cors({
     allowedHeaders: ["Content-Type", "Authorization"],
     origin:
-      process.env.NODE_ENV === "developement"
+      process.env.NODE_ENV === "development"
         ? "http://localhost:3000"
         : "https://www.coderhub.link",
     methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD", "DELETE"],
