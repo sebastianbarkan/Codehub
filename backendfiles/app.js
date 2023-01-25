@@ -11,15 +11,31 @@ const LocalStrategy = passportLocal.Strategy;
 require("dotenv").config();
 
 const connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
-  database: process.env.DB_NAME,
+  host:
+    process.env.NODE_ENV === "development"
+      ? process.env.DB_HOST
+      : process.env.PROD_DB_HOST,
+  user:
+    process.env.NODE_ENV === "development"
+      ? process.env.DB_USER
+      : process.env.PROD_DB_USER,
+  password:
+    process.env.NODE_ENV === "development"
+      ? process.env.DB_PASSWORD
+      : process.env.PROD_DB_PASSWORD,
+  port:
+    process.env.NODE_ENV === "development"
+      ? process.env.DB_PORT
+      : process.env.PROD_DB_PORT,
+  database:
+    process.env.NODE_ENV === "development"
+      ? process.env.DB_NAME
+      : process.env.PROD_DB_NAME,
 });
 
 // Middleware
 const app = express();
+
 app.use(express.json());
 app.use(
   cors({
@@ -32,6 +48,7 @@ app.use(
     credentials: true,
   })
 );
+
 app.use(
   session({
     secret: "secretcode",
@@ -117,6 +134,7 @@ app.post("/api/register", async (req, res) => {
     });
   }
 });
+
 app.post("/api/login", passport.authenticate("local"), (req, res) => {
   res.send("success");
 });

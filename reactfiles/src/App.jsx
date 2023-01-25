@@ -1,5 +1,5 @@
 import "./App.css";
-import { Outlet, useNavigate, ScrollRestoration } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { AuthWrap } from "./context/AuthWrap";
 import { SnippetContext } from "./context/SnippetContext";
 import { SearchContext } from "./context/SearchContext";
