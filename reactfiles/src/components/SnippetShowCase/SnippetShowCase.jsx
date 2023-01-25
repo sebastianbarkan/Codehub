@@ -181,7 +181,6 @@ function SnippetShowCase(props) {
         <h1 className={styles.title}>{props.info.title}</h1>
         <div className={styles.actionsWrap}>
           <div className={styles.buttonWrap}>
-            {console.log("auth", auth.userData.liked)}
             {auth.userData.liked !== null &&
             auth.userData.liked !== undefined ? (
               Object.values(auth.userData.liked).includes(props.info.id) ? (
